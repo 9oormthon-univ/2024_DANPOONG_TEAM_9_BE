@@ -1,0 +1,54 @@
+name: deploy
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin' 
+
+      - name: Make application-prod.yml file
+        run: |
+          cd ./src/main/resources
+          touch application-prod.yml
+          echo "${{ secrets.APPLICATION_PROD }}" > ./application-prod.yml
+        shell: bash
+
+      - name: Grant Execute Permission For Gradlew
+        run: chmod +x ./gradlew
+
+      - name: Build
+        run: |
+          ./gradlew bootJar
+
+      - name: Build & Push Docker Image
+        run: |
+          sudo docker build -t ${{ secrets.DOCKER_IMAGE }} --platform linux/amd64 .
+          sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          sudo docker push ${{ secrets.DOCKER_IMAGE }}
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          script: |
+            touch ./docker-compose.yml
+            echo "${{ secrets.DOCKER_COMPOSE }}" > ./docker-compose.yml
+            sudo docker stop $(sudo docker ps -a -q) 
+            sudo docker rm -f $(sudo docker ps -qa)
+            sudo docker pull ${{ secrets.DOCKER_IMAGE }}
+            sudo docker-compose -f docker-compose.yml up -d
+            sudo docker image prune -f
