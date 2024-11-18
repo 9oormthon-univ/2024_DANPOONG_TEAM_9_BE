@@ -1,0 +1,13 @@
+# 빌드 단계
+FROM openjdk:21-jdk-slim AS builder
+WORKDIR /app
+COPY . .
+RUN ./gradlew bootJar --no-daemon
+
+# 최종 이미지
+FROM openjdk:21-jdk-slim
+WORKDIR /app
+COPY --from=builder /app/build/libs/*.jar app.jar
+ENV TZ=Asia/Seoul
+
+ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=local", "app.jar"]

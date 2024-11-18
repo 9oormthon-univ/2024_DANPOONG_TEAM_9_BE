@@ -1,0 +1,42 @@
+services:
+  db:
+    container_name: mysql
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_DATABASE: LocCDB
+      MYSQL_ROOT_PASSWORD: COMPOSE_ROOT_PASSWORD
+      MYSQL_USER: COMPOSE_USER
+      MYSQL_PASSWORD: COMPOSE_PASSWORD
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/data
+  redis:
+    container_name: redis
+    image: redis:latest
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis-data:/data
+
+  LocC-App:
+    container_name: LocC-App
+    build:
+      context: .
+      dockerfile: Dockerfile-local
+    ports:
+      - "8081:8080"
+    environment:
+      spring.datasource.url: jdbc:mysql://db:3306/LocCDB
+      spring.datasource.username: COMPOSE_USER
+      spring.datasource.password: COMPOSE_PASSWORD
+      spring.redis.host: redis
+      spring.redis.port: 6379
+    depends_on:
+      - db
+      - redis
+
+volumes:
+  redis-data:
+  mysql-data:
