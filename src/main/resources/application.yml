@@ -1,0 +1,17 @@
+spring:
+  profiles:
+    active: local
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+    import: application-local.yml, application-swagger.yml
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+    import: application-prod.yml, application-swagger.yml
