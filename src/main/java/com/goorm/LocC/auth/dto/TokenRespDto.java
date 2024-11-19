@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class TokenRespDto {
 
-    @Schema(description = "닉네임", example = "구름")
+    @Schema(description = "닉네임", example = "미르미0303")
     private String username;
     @Schema(description = "이메일", example = "test@test.ac.kr")
     private String email;
@@ -18,7 +18,6 @@ public class TokenRespDto {
     private String accessToken;
 
     @Builder
-
     public TokenRespDto(String username, String email, String accessToken) {
         this.username = username;
         this.email = email;
