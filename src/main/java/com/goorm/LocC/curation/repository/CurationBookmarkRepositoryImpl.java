@@ -32,13 +32,13 @@ public class CurationBookmarkRepositoryImpl implements CurationBookmarkRepositor
                 )
                 .from(curationBookmark)
                 .join(curationBookmark.curation, curation)
-                .where(memberEq(condition.getMember()))
+                .on(bookmarkMemberEq(condition.getMember()))
                 .orderBy(curationBookmark.createdAt.desc())
                 .fetch();
 
     }
 
-    private BooleanExpression memberEq(Member member) {
+    private BooleanExpression bookmarkMemberEq(Member member) {
         return member != null ? curationBookmark.member.eq(member) : null;
     }
 }
