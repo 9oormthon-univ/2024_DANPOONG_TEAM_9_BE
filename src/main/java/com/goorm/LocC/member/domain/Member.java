@@ -28,6 +28,9 @@ public class Member extends BaseEntity {
     @Column(nullable = false)
     private String username;
 
+    @Column(nullable = false, unique = true)
+    private String handle;
+
     private String profileImageUrl = "";
 
     @Enumerated(EnumType.STRING)
@@ -41,6 +44,7 @@ public class Member extends BaseEntity {
     public Member(SocialType socialType, String socialId, String username, String profileImageUrl, String email) {
         this.socialType = socialType;
         this.socialId = socialId;
+        this.handle = socialId; // 임시 지정
         this.username = username;
         this.profileImageUrl = profileImageUrl;
         this.email = email;
