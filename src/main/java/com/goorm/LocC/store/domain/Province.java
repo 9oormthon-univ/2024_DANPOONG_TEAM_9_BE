@@ -15,18 +15,18 @@ import static com.goorm.LocC.store.exception.StoreErrorCode.INVALID_PROVINCE_ENU
 @RequiredArgsConstructor
 public enum Province {
     SEOUL("서울"),
-    GYEONGGI("경기도"),
+    GYEONGGI("경기"),
     INCHEON("인천"),
-    GANGWON("강원도"),
+    GANGWON("강원"),
     DAEJEON("대전"),
-    CHUNGCHEONG("충청도"),
-    JEOLLA("전라도"),
+    CHUNGCHEONG("충청"),
+    JEOLLA("전라"),
     GWANGJU("광주"),
-    GYEONGSANG("경상도"),
+    GYEONGSANG("경상"),
     DAEGU("대구"),
     BUSAN("부산"),
     ULSAN("울산"),
-    JEJU("제주도"),
+    JEJU("제주"),
     ;
 
     private final String name;

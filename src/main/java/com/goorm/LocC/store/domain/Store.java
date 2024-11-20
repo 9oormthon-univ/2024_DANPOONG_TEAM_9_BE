@@ -24,7 +24,8 @@ public class Store extends BaseEntity {
     private String name;
 
     @Column(nullable = false)
-    private String category;
+    @Enumerated(EnumType.STRING)
+    private Category category;
 
     @Column(nullable = false)
     private String address;
@@ -40,6 +41,8 @@ public class Store extends BaseEntity {
     private City city;
 
     private String homepageUrl;
+
+    private String thumbnailImageUrl;
 
     private float rating = 0;
 

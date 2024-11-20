@@ -31,5 +31,5 @@ public class BusinessHour extends BaseEntity {
     private LocalTime closeTime;
 
     @Column(nullable = false)
-    private Boolean isClosed;
+    private Boolean isHoliday;
 }

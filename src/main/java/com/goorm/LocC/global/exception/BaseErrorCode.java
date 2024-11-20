@@ -10,9 +10,13 @@ public interface BaseErrorCode {
     String getCode();
     String getMessage();
 
+    default ApiResponse<Void> toApiResponse() {
+        return ApiResponse.failure(this);
+    }
+
     default ResponseEntity<ApiResponse<Void>> toResponseEntity() {
         return ResponseEntity
                 .status(getStatus())
-                .body(ApiResponse.failure(this));
+                .body(toApiResponse());
     }
 }

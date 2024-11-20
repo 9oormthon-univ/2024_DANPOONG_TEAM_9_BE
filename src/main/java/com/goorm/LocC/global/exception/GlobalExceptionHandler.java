@@ -1,8 +1,10 @@
 package com.goorm.LocC.global.exception;
 
 import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
+import com.goorm.LocC.auth.exception.AuthException;
 import com.goorm.LocC.global.common.dto.ApiResponse;
 import com.goorm.LocC.member.exception.MemberException;
+import com.goorm.LocC.review.exception.ReviewException;
 import com.goorm.LocC.store.exception.StoreException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @Slf4j
 @RestControllerAdvice
@@ -19,13 +23,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
         Throwable cause = e.getCause();
 
-        log.warn(e.getMessage(), e);
+        log.warn("HttpMessageNotReadable Exception: {}", e.getMessage());
 
         if (cause instanceof ValueInstantiationException exception) {
             Throwable innerCause = exception.getCause(); // 내부 예외 확인
             if (innerCause instanceof BaseException baseException) {
                 return baseException.getErrorCode().toResponseEntity();
-
             }
         }
 
@@ -46,7 +49,28 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MemberException.class)
     public ResponseEntity<ApiResponse<Void>> handleMemberException(MemberException e) {
-        log.warn(e.getMessage(), e);
+        log.warn("Member Exception: {}", e.getMessage());
+
+        return e.getErrorCode().toResponseEntity();
+    }
+
+    @ExceptionHandler(AuthException.class)
+    public ResponseEntity<ApiResponse<Void>> handleAuthException(AuthException e) {
+        log.warn("Auth Exception: {}", e.getMessage());
+
+        return e.getErrorCode().toResponseEntity();
+    }
+
+    @ExceptionHandler(ReviewException.class)
+    public ResponseEntity<ApiResponse<Void>> handleReviewException(ReviewException e) {
+        log.warn("Review Exception: {}", e.getMessage());
+
+        return e.getErrorCode().toResponseEntity();
+    }
+
+    @ExceptionHandler(StoreException.class)
+    public ResponseEntity<ApiResponse<Void>> handleStoreException(StoreException e) {
+        log.warn("Store Exception: {}", e.getMessage());
 
         return e.getErrorCode().toResponseEntity();
     }
@@ -55,7 +79,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> handleException(Exception e) {
         log.warn(e.getMessage(), e);
 
-        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+        HttpStatus status = INTERNAL_SERVER_ERROR;
         return ResponseEntity.internalServerError()
                 .body(ApiResponse.failure(String.valueOf(status.value()), status.getReasonPhrase()));
     }

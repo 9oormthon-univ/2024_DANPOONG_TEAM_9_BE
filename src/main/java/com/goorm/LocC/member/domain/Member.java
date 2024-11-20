@@ -3,6 +3,7 @@ package com.goorm.LocC.member.domain;
 import com.goorm.LocC.global.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,10 +18,20 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private SocialType socialType;
+
+    @Column(nullable = false, unique = true)
+    private String socialId;
+
     @Column(nullable = false)
     private String username;
 
-    private String profileImageUrl;
+    @Column(nullable = false, unique = true)
+    private String handle;
+
+    private String profileImageUrl = "";
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -28,4 +39,14 @@ public class Member extends BaseEntity {
 
     @Column(nullable = false, unique = true)
     private String email;
+
+    @Builder
+    public Member(SocialType socialType, String socialId, String username, String profileImageUrl, String email) {
+        this.socialType = socialType;
+        this.socialId = socialId;
+        this.handle = socialId; // 임시 지정
+        this.username = username;
+        this.profileImageUrl = profileImageUrl;
+        this.email = email;
+    }
 }
