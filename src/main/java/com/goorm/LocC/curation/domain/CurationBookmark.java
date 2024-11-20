@@ -4,6 +4,7 @@ import com.goorm.LocC.global.common.entity.BaseEntity;
 import com.goorm.LocC.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,4 +24,10 @@ public class CurationBookmark extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "curation_id", nullable = false)
     private Curation curation;
+
+    @Builder
+    public CurationBookmark(Curation curation, Member member) {
+        this.curation = curation;
+        this.member = member;
+    }
 }
