@@ -4,6 +4,7 @@ import com.goorm.LocC.global.common.entity.BaseEntity;
 import com.goorm.LocC.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,4 +24,10 @@ public class StoreBookmark extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
+
+    @Builder
+    public StoreBookmark(Member member, Store store) {
+        this.member = member;
+        this.store = store;
+    }
 }

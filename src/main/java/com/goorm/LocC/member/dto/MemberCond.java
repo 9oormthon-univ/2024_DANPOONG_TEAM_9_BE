@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @Getter
 public class MemberCond {
 
-    Member member;
+    private Member member;
 }

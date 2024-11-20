@@ -53,4 +53,14 @@ public class Store extends BaseEntity {
     private int dibsCount = 0;
 
     private String content;
+
+    public int addDibsCount() {
+        dibsCount += 1;
+        return dibsCount;
+    }
+
+    public int subDibsCount() {
+        dibsCount -= 1;
+        return dibsCount;
+    }
 }

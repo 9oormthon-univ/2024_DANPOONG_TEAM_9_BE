@@ -1,4 +1,4 @@
-package com.goorm.LocC.curation.domain;
+package com.goorm.LocC.review.domain;
 
 import com.goorm.LocC.global.common.entity.BaseEntity;
 import com.goorm.LocC.member.domain.Member;
@@ -11,23 +11,23 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class CurationBookmark extends BaseEntity {
+public class ReviewLike extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long curationBookmarkId;
+    private Long reviewLikeId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "curation_id", nullable = false)
-    private Curation curation;
+    @JoinColumn(name = "review_id", nullable = false)
+    private Review review;
 
     @Builder
-    public CurationBookmark(Curation curation, Member member) {
-        this.curation = curation;
+    public ReviewLike(Member member, Review review) {
         this.member = member;
+        this.review = review;
     }
 }

@@ -37,8 +37,15 @@ public class Review extends BaseEntity {
     private int likeCount = 0;
 
     @Column(nullable = false)
-    private int dibsCount = 0;
-
-    @Column(nullable = false)
     private LocalDate visitedDate;
+
+    public int addLikeCount() {
+        likeCount += 1;
+        return likeCount;
+    }
+
+    public int subLikeCount() {
+        likeCount -= 1;
+        return likeCount;
+    }
 }
