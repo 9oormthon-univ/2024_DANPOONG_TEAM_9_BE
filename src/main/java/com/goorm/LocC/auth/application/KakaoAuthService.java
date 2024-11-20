@@ -47,10 +47,7 @@ public class KakaoAuthService {
                             .get(PROFILE)
                             .get(PROFILE_IMAGE_URL))
                     .map(JsonNode::asText)
-                    .orElse(
-                        // TODO: 프로필 이미지가 없을 경우 기본 이미지 URL 리턴
-                            ""
-                    );
+                    .orElse(null);
 
             return KakaoInfoDto.builder()
                     .socialId(id)

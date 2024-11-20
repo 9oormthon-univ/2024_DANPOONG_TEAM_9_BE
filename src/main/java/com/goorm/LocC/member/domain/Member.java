@@ -46,7 +46,8 @@ public class Member extends BaseEntity {
         this.socialId = socialId;
         this.handle = socialId; // 임시 지정
         this.username = username;
-        this.profileImageUrl = profileImageUrl;
+        this.profileImageUrl = profileImageUrl != null ? profileImageUrl
+            : "https://locc-bucket.s3.ap-northeast-2.amazonaws.com/default_profile/default_profile_2.png";
         this.email = email;
     }
 }
