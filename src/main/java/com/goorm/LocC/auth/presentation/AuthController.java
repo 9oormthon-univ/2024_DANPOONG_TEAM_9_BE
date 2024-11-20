@@ -21,7 +21,7 @@ public class AuthController {
     @PostMapping("/kakao")
     @Operation(summary = "카카오 회원가입 및 로그인")
     public ResponseEntity<ApiResponse<TokenRespDto>> kakaoLogin(
-            @Schema(description = "카카오 액세스 토큰", example = "Bearer bVF0Z136P6bHrZwEhOKJe21sOJtb9a_vAAAAAQo8IpsAAAGTRCyz-1XuKbObXTiX")
+            @Schema(description = "카카오 액세스 토큰<br>(카카오에서 발급받은 access token 앞에 Bearer 을 붙여서 보내주세요.)", example = "Bearer bVF0Z136P6bHrZwEhOKJe21sOJtb9a_vAAAAAQo8IpsAAAGTRCyz-1XuKbObXTiX")
             @RequestHeader("Kakao-Authorization") String kakaoAccessToken) {
         return ResponseEntity.ok(
                 ApiResponse.success(
