@@ -44,7 +44,7 @@ public class Member extends BaseEntity {
     public Member(SocialType socialType, String socialId, String username, String profileImageUrl, String email) {
         this.socialType = socialType;
         this.socialId = socialId;
-        this.handle = socialId; // 임시 지정
+        this.handle = email.substring(0, email.indexOf("@")); // 임시 지정
         this.username = username;
         this.profileImageUrl = profileImageUrl != null ? profileImageUrl
             : "https://locc-bucket.s3.ap-northeast-2.amazonaws.com/default_profile/default_profile_2.png";

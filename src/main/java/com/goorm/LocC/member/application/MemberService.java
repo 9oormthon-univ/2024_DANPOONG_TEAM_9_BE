@@ -28,6 +28,7 @@ public class MemberService {
     private final CurationBookmarkRepository curationBookmarkRepository;
     private final StoreBookmarkRepository storeBookmarkRepository;
 
+    @Transactional(readOnly = true)
     public ProfileInfoRespDto getProfile(String email) {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
