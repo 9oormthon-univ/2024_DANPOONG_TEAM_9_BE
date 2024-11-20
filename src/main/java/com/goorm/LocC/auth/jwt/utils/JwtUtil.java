@@ -7,6 +7,7 @@ import com.goorm.LocC.auth.exception.JwtException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -81,7 +82,7 @@ public class JwtUtil {
 		} catch (ExpiredJwtException e) {
 			log.warn("Expired Token: {}", e.getMessage());
 			throw new JwtException(JwtErrorCode.EXPIRED_TOKEN);
-		} catch (MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
+		} catch (MalformedJwtException | SignatureException | UnsupportedJwtException | IllegalArgumentException e) {
 			log.warn("Invalid Token: {}", e.getMessage());
 			throw new JwtException(JwtErrorCode.INVALID_TOKEN);
 		} catch (Exception e) {
