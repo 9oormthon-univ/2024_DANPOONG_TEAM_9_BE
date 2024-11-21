@@ -39,7 +39,8 @@ public class SearchHistoryRepositoryImpl implements SearchHistoryRepositoryCusto
                     searchHistory.keyword
                 ))
                 .from(searchHistory)
-                .where(searchHistory.member.eq(condition.getMember()))
+                .where(searchHistory.member.eq(condition.getMember()),
+                        searchHistory.isDeleted.eq(false))
                 .orderBy(searchHistory.createdAt.desc())
                 .limit(condition.getLimit())
                 .fetch();

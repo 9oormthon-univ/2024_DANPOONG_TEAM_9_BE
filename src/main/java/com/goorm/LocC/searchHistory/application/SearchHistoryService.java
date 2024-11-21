@@ -3,9 +3,11 @@ package com.goorm.LocC.searchHistory.application;
 import com.goorm.LocC.member.domain.Member;
 import com.goorm.LocC.member.exception.MemberException;
 import com.goorm.LocC.member.repository.MemberRepository;
+import com.goorm.LocC.searchHistory.domain.SearchHistory;
 import com.goorm.LocC.searchHistory.dto.RecentKeywordCond;
 import com.goorm.LocC.searchHistory.dto.SearchKeywordRespDto;
 import com.goorm.LocC.searchHistory.dto.SearchKeywordRespDto.RecentKeywordInfoDto;
+import com.goorm.LocC.searchHistory.exception.SearchHistoryException;
 import com.goorm.LocC.searchHistory.repository.SearchHistoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.goorm.LocC.member.exception.MemberErrorCode.MEMBER_NOT_FOUND;
+import static com.goorm.LocC.searchHistory.exception.SearchHistoryErrorCode.SEARCH_HISTORY_NOT_FOUND;
 
 @RequiredArgsConstructor
 @Transactional
@@ -24,6 +27,7 @@ public class SearchHistoryService {
     private final MemberRepository memberRepository;
     private final SearchHistoryRepository searchHistoryRepository;
 
+    @Transactional(readOnly = true)
     public SearchKeywordRespDto getSearchKeywordInfo(String email) {
         Member member = findMemberByEmail(email);
         RecentKeywordCond condition = new RecentKeywordCond(member, 5);
@@ -58,16 +62,19 @@ public class SearchHistoryService {
                 .build();
     }
 
-
     public void deleteBySearchHistoryId(String email, Long searchHistoryId) {
+        Member member = findMemberByEmail(email);
 
-        // TODO: 검색 기록 유저 일치 여부 확인 로직 추가 필요
-        searchHistoryRepository.deleteById(searchHistoryId);
+        searchHistoryRepository.findSearchHistoryByMemberAndSearchHistoryId(member, searchHistoryId)
+                .orElseThrow(() -> new SearchHistoryException(SEARCH_HISTORY_NOT_FOUND))
+                .delete();
     }
 
     public void deleteAll(String email) {
         Member member = findMemberByEmail(email);
-        searchHistoryRepository.deleteAllByMember(member);
+
+        List<SearchHistory> searchHistories = searchHistoryRepository.findAllByMemberAndIsDeleted(member, false);
+        searchHistories.forEach(SearchHistory::delete);
     }
 
     private Member findMemberByEmail(String email) {

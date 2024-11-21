@@ -22,4 +22,11 @@ public class SearchHistory extends BaseEntity {
 
     @Column(nullable = false)
     private String keyword;
+
+    @Column(nullable = false)
+    private Boolean isDeleted = false;
+
+    public void delete() {
+        this.isDeleted = true;
+    }
 }
