@@ -5,6 +5,7 @@ import com.goorm.LocC.auth.exception.AuthException;
 import com.goorm.LocC.global.common.dto.ApiResponse;
 import com.goorm.LocC.member.exception.MemberException;
 import com.goorm.LocC.review.exception.ReviewException;
+import com.goorm.LocC.searchHistory.exception.SearchHistoryException;
 import com.goorm.LocC.store.exception.StoreException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -71,6 +72,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(StoreException.class)
     public ResponseEntity<ApiResponse<Void>> handleStoreException(StoreException e) {
         log.warn("Store Exception: {}", e.getMessage());
+
+        return e.getErrorCode().toResponseEntity();
+    }
+
+    @ExceptionHandler(SearchHistoryException.class)
+    public ResponseEntity<ApiResponse<Void>> handleSearchHistoryException(SearchHistoryException e) {
+        log.warn("SearchHistory Exception: {}", e.getMessage());
 
         return e.getErrorCode().toResponseEntity();
     }
