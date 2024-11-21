@@ -8,4 +8,5 @@ import java.util.List;
 public interface CurationBookmarkRepositoryCustom {
 
     List<CurationInfoDto> searchCurationsByMember(MemberCond condition);
+
 }

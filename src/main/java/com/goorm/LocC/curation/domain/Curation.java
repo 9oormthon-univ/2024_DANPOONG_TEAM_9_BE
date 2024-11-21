@@ -29,6 +29,5 @@ public class Curation extends BaseEntity {
     @Column(nullable = false)
     private String imageUrl;
 
-    @Column(nullable = false)
-    private LocalDate curationDate;
+    private LocalDate publishedDate;
 }
