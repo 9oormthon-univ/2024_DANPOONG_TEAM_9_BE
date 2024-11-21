@@ -1,5 +1,6 @@
 package com.goorm.LocC.review.repository;
 
+import com.goorm.LocC.review.domain.Review;
 import com.goorm.LocC.review.dto.ReviewInfoDto;
 import com.goorm.LocC.store.domain.City;
 import com.goorm.LocC.store.domain.Province;
@@ -10,6 +11,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.goorm.LocC.review.domain.QReview.review;
 import static com.goorm.LocC.store.domain.QStore.store;
@@ -19,19 +21,20 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
+    // 기존 메서드 유지
+    @Override
     public List<ReviewInfoDto> findTop5ByProvinceAndCity(RegionCond condition) {
-
         return queryFactory
                 .select(
-                    Projections.constructor(ReviewInfoDto.class,
-                        review.reviewId,
-                            review.member.username,
-                            store.name.as("storeName"),
-                            store.category,
-                            store.rating,
-                            store.reviewCount,
-                            review.imageUrl
-                    )
+                        Projections.constructor(ReviewInfoDto.class,
+                                review.reviewId,
+                                review.member.username,
+                                store.name.as("storeName"),
+                                store.category,
+                                store.rating,
+                                store.reviewCount,
+                                review.imageUrl
+                        )
                 )
                 .from(review)
                 .join(review.store, store)
@@ -39,7 +42,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
                         eqProvince(condition.getProvince()),
                         eqCity(condition.getCity())
                 )
-                .limit(5) // 5개만 조회
+                .limit(5)
                 .fetch();
     }
 
@@ -49,5 +52,17 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
 
     private BooleanExpression eqCity(City city) {
         return city != null ? store.city.eq(city) : null;
+    }
+
+    // 새로운 메서드 추가
+    @Override
+    public Optional<Review> findReviewDetailById(Long reviewId) {
+        Review foundReview = queryFactory
+                .selectFrom(review)
+                .join(review.store, store).fetchJoin()
+                .where(review.reviewId.eq(reviewId))
+                .fetchOne();
+
+        return Optional.ofNullable(foundReview);
     }
 }

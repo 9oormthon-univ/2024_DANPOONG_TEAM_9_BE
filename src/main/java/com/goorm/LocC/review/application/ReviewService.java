@@ -5,6 +5,7 @@ import com.goorm.LocC.member.exception.MemberException;
 import com.goorm.LocC.member.repository.MemberRepository;
 import com.goorm.LocC.review.domain.Review;
 import com.goorm.LocC.review.domain.ReviewLike;
+import com.goorm.LocC.review.dto.ReviewDetailResponseDto;
 import com.goorm.LocC.review.exception.ReviewException;
 import com.goorm.LocC.review.repository.ReviewLikeRepository;
 import com.goorm.LocC.review.repository.ReviewRepository;
@@ -44,14 +45,35 @@ public class ReviewService {
         } else { // 좋아요하지 않은 경우
             reviewLikeRepository.save(
                     ReviewLike.builder()
-                    .member(member)
-                    .review(review)
-                    .build());
+                            .member(member)
+                            .review(review)
+                            .build());
 
             return ToggleStoreBookmarkRespDto.builder()
                     .count(review.addLikeCount())
                     .isBookmarked(true)
                     .build();
         }
+    }
+
+    // 추가된 개별 리뷰 상세 조회 메서드
+    public ReviewDetailResponseDto getReviewDetail(Long reviewId) {
+        Review review = reviewRepository.findReviewDetailById(reviewId)
+                .orElseThrow(() -> new ReviewException(REVIEW_NOT_FOUND));
+
+        // DTO로 변환하여 반환
+        return new ReviewDetailResponseDto(
+                review.getReviewId(),
+                review.getStore().getName(),
+                review.getContent(),
+                review.getImageUrl(),
+                false, // 좋아요 여부 - 구현 필요
+                review.getLikeCount(),
+                false, // 북마크 여부 - 구현 필요
+                0, // 찜 개수 (데이터 없음)
+                0, // 공유 개수 (데이터 없음)
+                review.getVisitedDate(),
+                review.getStore().getKakaomapUrl()
+        );
     }
 }

@@ -54,6 +54,14 @@ public class Store extends BaseEntity {
 
     private String content;
 
+    private String kakaomapUrl;
+
+
+    public String getKakaomapUrl() {
+        return kakaomapUrl;
+    }
+
+
     public int addDibsCount() {
         dibsCount += 1;
         return dibsCount;
