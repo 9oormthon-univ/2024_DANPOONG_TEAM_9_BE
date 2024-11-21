@@ -25,7 +25,7 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
                     Projections.constructor(BenefitStoreInfoDto.class,
                         store.storeId,
                         store.name,
-                        store.reviewCount,
+                        store.rating,
                         store.province,
                         store.city,
                         store.thumbnailImageUrl.as("imageUrl")

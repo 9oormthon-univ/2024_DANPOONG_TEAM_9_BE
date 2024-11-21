@@ -12,15 +12,15 @@ public class BenefitStoreInfoDto {
 
     private Long storeId;
     private String name;
-    private int reviewCount;
+    private float rating;
     private Province province;
     private City city;
     private String imageUrl;
 
-    public BenefitStoreInfoDto(Long storeId, String name, int reviewCount, Province province, City city, String imageUrl) {
+    public BenefitStoreInfoDto(Long storeId, String name, float rating, Province province, City city, String imageUrl) {
         this.storeId = storeId;
         this.name = name;
-        this.reviewCount = reviewCount;
+        this.rating = rating * 100 / 100.0f;;
         this.province = province;
         this.city = city;
         this.imageUrl = imageUrl;
