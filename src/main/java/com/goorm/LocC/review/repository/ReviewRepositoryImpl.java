@@ -28,7 +28,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
                             review.member.username,
                             store.name.as("storeName"),
                             store.category,
-                            store.rating,
+                            review.rating,
                             store.reviewCount,
                             review.imageUrl
                     )
