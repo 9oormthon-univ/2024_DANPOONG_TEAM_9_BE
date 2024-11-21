@@ -40,6 +40,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
                         eqCity(condition.getCity())
                 )
                 .limit(condition.getLimit())
+                .orderBy(review.likeCount.desc())
                 .fetch();
     }
 
