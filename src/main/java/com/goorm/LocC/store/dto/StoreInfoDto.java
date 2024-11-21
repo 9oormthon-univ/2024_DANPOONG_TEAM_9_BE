@@ -15,7 +15,6 @@ import java.time.LocalTime;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class StoreInfoDto {
 
     @Schema(description = "가게 ID", example = "1")

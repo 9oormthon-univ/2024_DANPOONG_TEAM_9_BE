@@ -9,7 +9,6 @@ import java.util.Optional;
 
 public interface ReviewRepositoryCustom {
 
-    List<ReviewInfoDto> findTop5ByProvinceAndCity(RegionCond condition);
-
-    Optional<Review> findReviewDetailById(Long reviewId); // 새로운 메서드 추가
+    List<ReviewInfoDto> findReviewsByProvinceAndCity(RegionCond condition);
+    Optional<Review> findReviewDetailById(Long reviewId);
 }

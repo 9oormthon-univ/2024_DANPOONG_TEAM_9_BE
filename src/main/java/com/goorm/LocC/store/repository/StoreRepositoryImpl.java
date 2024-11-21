@@ -18,14 +18,14 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<BenefitStoreInfoDto> findTop5ByProvinceAndCity(RegionCond condition) {
+    public List<BenefitStoreInfoDto> findBenefitStoresByProvinceAndCity(RegionCond condition) {
 
         return queryFactory
                 .select(
                     Projections.constructor(BenefitStoreInfoDto.class,
                         store.storeId,
                         store.name,
-                        store.reviewCount,
+                        store.rating,
                         store.province,
                         store.city,
                         store.thumbnailImageUrl.as("imageUrl")
@@ -36,7 +36,8 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
                         eqProvince(condition.getProvince()),
                         eqCity(condition.getCity())
                 )
-                .limit(5) // 5개만 조회
+                .limit(condition.getLimit())
+                .orderBy(store.rating.desc())
                 .fetch();
     }
 

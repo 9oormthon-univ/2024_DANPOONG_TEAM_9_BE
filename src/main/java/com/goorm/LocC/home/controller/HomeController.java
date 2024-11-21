@@ -21,7 +21,7 @@ public class HomeController {
 
     private final HomeService homeService;
 
-    @Operation(summary = "메인 홈 정보 조회", description = "메인 홈 정보를 조회합니다.")
+    @Operation(summary = "메인 홈 데이터 조회", description = "메인 홈에 출력되는 데이터들을 조회합니다.")
     @GetMapping
     public ResponseEntity<ApiResponse<HomeInfoResp>> getHomeInfo(
             @AuthenticationPrincipal CustomUserDetails user

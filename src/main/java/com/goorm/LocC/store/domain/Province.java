@@ -14,25 +14,25 @@ import static com.goorm.LocC.store.exception.StoreErrorCode.INVALID_PROVINCE_ENU
 @Getter
 @RequiredArgsConstructor
 public enum Province {
-    SEOUL("서울", ""),
-    GYEONGGI("경기", ""),
-    INCHEON("인천", ""),
-    GANGWON("강원", ""),
-    DAEJEON("대전", ""),
-    CHUNGCHEONG("충청", ""),
-    JEOLLA("전라", ""),
-    GWANGJU("광주", ""),
-    GYEONGSANG("경상", ""),
-    DAEGU("대구", ""),
-    BUSAN("부산", ""),
-    ULSAN("울산", ""),
-    JEJU("제주", ""),
+    SEOUL("서울"),
+    GYEONGGI("경기"),
+    INCHEON("인천"),
+    GANGWON("강원"),
+    DAEJEON("대전"),
+    CHUNGCHEONG("충청"),
+    JEOLLA("전라"),
+    GWANGJU("광주"),
+    GYEONGSANG("경상"),
+    DAEGU("대구"),
+    BUSAN("부산"),
+    ULSAN("울산"),
+    JEJU("제주");
     ;
 
+    private static final String BASE_IMAGE_URL = "https://locc-bucket.s3.ap-northeast-2.amazonaws.com/province_icon/";
     private final String name;
-    private final String imageUrl;
-    private static Map<String, Province> NAME_TO_ENUM_MAP = new HashMap<>();
 
+    private static final Map<String, Province> NAME_TO_ENUM_MAP = new HashMap<>();
     static {
         for (Province province : Province.values()) {
             NAME_TO_ENUM_MAP.put(province.name, province);
@@ -53,5 +53,9 @@ public enum Province {
         }
 
         return province;
+    }
+
+    public String getImageUrl() {
+        return BASE_IMAGE_URL + this + ".png";
     }
 }
