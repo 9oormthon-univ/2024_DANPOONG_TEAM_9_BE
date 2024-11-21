@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "검색 기록", description = "검색 기록 조회/삭제 관련 API")
+@Tag(name = "검색 기록", description = "검색어 조회/삭제 관련 API")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/searches")
