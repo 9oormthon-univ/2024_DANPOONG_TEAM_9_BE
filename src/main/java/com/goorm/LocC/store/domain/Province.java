@@ -14,22 +14,23 @@ import static com.goorm.LocC.store.exception.StoreErrorCode.INVALID_PROVINCE_ENU
 @Getter
 @RequiredArgsConstructor
 public enum Province {
-    SEOUL("서울"),
-    GYEONGGI("경기"),
-    INCHEON("인천"),
-    GANGWON("강원"),
-    DAEJEON("대전"),
-    CHUNGCHEONG("충청"),
-    JEOLLA("전라"),
-    GWANGJU("광주"),
-    GYEONGSANG("경상"),
-    DAEGU("대구"),
-    BUSAN("부산"),
-    ULSAN("울산"),
-    JEJU("제주"),
+    SEOUL("서울", ""),
+    GYEONGGI("경기", ""),
+    INCHEON("인천", ""),
+    GANGWON("강원", ""),
+    DAEJEON("대전", ""),
+    CHUNGCHEONG("충청", ""),
+    JEOLLA("전라", ""),
+    GWANGJU("광주", ""),
+    GYEONGSANG("경상", ""),
+    DAEGU("대구", ""),
+    BUSAN("부산", ""),
+    ULSAN("울산", ""),
+    JEJU("제주", ""),
     ;
 
     private final String name;
+    private final String imageUrl;
     private static Map<String, Province> NAME_TO_ENUM_MAP = new HashMap<>();
 
     static {
