@@ -37,6 +37,7 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
                         eqCity(condition.getCity())
                 )
                 .limit(condition.getLimit())
+                .orderBy(store.rating.desc())
                 .fetch();
     }
 

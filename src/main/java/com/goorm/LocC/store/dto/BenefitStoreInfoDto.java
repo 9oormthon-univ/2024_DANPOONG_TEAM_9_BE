@@ -20,7 +20,7 @@ public class BenefitStoreInfoDto {
     public BenefitStoreInfoDto(Long storeId, String name, float rating, Province province, City city, String imageUrl) {
         this.storeId = storeId;
         this.name = name;
-        this.rating = rating * 100 / 100.0f;;
+        this.rating = Math.round(rating * 100) / 100.0f;;
         this.province = province;
         this.city = city;
         this.imageUrl = imageUrl;

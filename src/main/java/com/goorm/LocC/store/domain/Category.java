@@ -14,8 +14,15 @@ import static com.goorm.LocC.store.exception.StoreErrorCode.INVALID_CATEGORY_ENU
 @Getter
 @RequiredArgsConstructor
 public enum Category {
+    FOOD("식품"),
     RESTAURANT("맛집"),
     CAFE("카페"),
+    HANDCRAFT("공방"),
+    SHOPPING("쇼핑"),
+    LOCAL_STORE("동네가게"),
+    BOOKSTORE("책방"),
+    SPACE("공간"),
+    ACCOMMODATION("숙소");
     ;
 
     private final String name;
