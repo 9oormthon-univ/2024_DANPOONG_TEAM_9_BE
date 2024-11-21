@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class ToggleReviewLikeRespDto {
 
-    @Schema(description = "총 리뷰 좋아요 수")
+    @Schema(description = "총 리뷰 좋아요 수", example = "123")
     private int count;
     @Schema(description = "해당 유저의 리뷰 좋아요 여부")
     private boolean isBookmarked;

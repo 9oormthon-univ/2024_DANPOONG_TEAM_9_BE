@@ -18,7 +18,7 @@ public class ReviewInfoDto {
     private String storeName;
     @Schema(description = "카테고리", example = "맛집")
     private Category category;
-    @Schema(description = "가게 평점", example = "4.40")
+    @Schema(description = "리뷰 평점", example = "4")
     private int rating;
     @Schema(description = "리뷰 수", example = "274")
     private int reviewCount;

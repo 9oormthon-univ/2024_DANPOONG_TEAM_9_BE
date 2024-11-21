@@ -32,7 +32,7 @@ public class SearchHistoryController {
 
     @Operation(summary = "검색 기록 단일 삭제", description = "유저의 검색 기록을 삭제합니다.")
     @DeleteMapping("/{searchHistoryId}")
-    public ResponseEntity<ApiResponse<Void>> deleteSearchHistory(
+    public ResponseEntity<ApiResponse<String>> deleteSearchHistory(
             @Parameter(description = "검색 기록 ID", example = "1")
             @PathVariable Long searchHistoryId,
             @AuthenticationPrincipal CustomUserDetails user
