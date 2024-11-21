@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ReviewRepositoryCustom {
 
-    List<ReviewInfoDto> findTop5ByProvinceAndCity(RegionCond condition);
+    List<ReviewInfoDto> findReviewsByProvinceAndCity(RegionCond condition);
 }

@@ -3,6 +3,7 @@ package com.goorm.LocC.store.application;
 import com.goorm.LocC.member.domain.Member;
 import com.goorm.LocC.member.exception.MemberException;
 import com.goorm.LocC.member.repository.MemberRepository;
+import com.goorm.LocC.searchHistory.repository.SearchHistoryRepository;
 import com.goorm.LocC.store.domain.Store;
 import com.goorm.LocC.store.domain.StoreBookmark;
 import com.goorm.LocC.store.dto.ToggleStoreBookmarkRespDto;
@@ -26,10 +27,10 @@ public class StoreService {
     private final MemberRepository memberRepository;
     private final StoreRepository storeRepository;
     private final StoreBookmarkRepository storeBookmarkRepository;
+    private final SearchHistoryRepository searchHistoryRepository;
 
     public ToggleStoreBookmarkRespDto toggleBookmark(Long storeId, String email) {
-        Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
+        Member member = findMemberByEmail(email);
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(() -> new StoreException(STORE_NOT_FOUND));
         Optional<StoreBookmark> optionalBookmark = storeBookmarkRepository.findStoreBookmarkByMemberAndStore(member, store);
@@ -53,5 +54,10 @@ public class StoreService {
                     .isBookmarked(true)
                     .build();
         }
+    }
+
+    private Member findMemberByEmail(String email) {
+        return memberRepository.findByEmail(email)
+                .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
     }
 }
