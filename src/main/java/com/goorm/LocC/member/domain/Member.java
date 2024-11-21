@@ -1,6 +1,8 @@
 package com.goorm.LocC.member.domain;
 
 import com.goorm.LocC.global.common.entity.BaseEntity;
+import com.goorm.LocC.store.domain.City;
+import com.goorm.LocC.store.domain.Province;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -39,6 +41,12 @@ public class Member extends BaseEntity {
 
     @Column(nullable = false, unique = true)
     private String email;
+
+    @Enumerated(EnumType.STRING)
+    private Province preferredProvince;
+
+    @Enumerated(EnumType.STRING)
+    private City preferredCity;
 
     @Builder
     public Member(SocialType socialType, String socialId, String username, String profileImageUrl, String email) {
