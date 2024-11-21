@@ -31,6 +31,7 @@ public class Review extends BaseEntity {
 
     private String content;
 
+    @Column(length = 2048)
     private String imageUrl;
 
     @Column(nullable = false)

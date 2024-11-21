@@ -42,6 +42,7 @@ public class Store extends BaseEntity {
 
     private String homepageUrl;
 
+    @Column(length = 2048)
     private String thumbnailImageUrl;
 
     private float rating = 0;
