@@ -19,7 +19,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<ReviewInfoDto> findTop5ByProvinceAndCity(RegionCond condition) {
+    public List<ReviewInfoDto> findReviewsByProvinceAndCity(RegionCond condition) {
 
         return queryFactory
                 .select(
@@ -39,7 +39,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
                         eqProvince(condition.getProvince()),
                         eqCity(condition.getCity())
                 )
-                .limit(5) // 5개만 조회
+                .limit(condition.getLimit())
                 .fetch();
     }
 

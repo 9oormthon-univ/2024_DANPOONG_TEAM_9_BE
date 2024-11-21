@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface StoreRepositoryCustom {
 
-    List<BenefitStoreInfoDto> findTop5ByProvinceAndCity(RegionCond condition);
+    List<BenefitStoreInfoDto> findBenefitStoresByProvinceAndCity(RegionCond condition);
 }

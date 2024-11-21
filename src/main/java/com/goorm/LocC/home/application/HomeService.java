@@ -46,7 +46,7 @@ public class HomeService {
 
         Province preferredProvince = member.getPreferredProvince();
         City preferredCity = member.getPreferredCity();
-        RegionCond regionCond = new RegionCond(preferredProvince, preferredCity);
+        RegionCond regionCond = new RegionCond(preferredProvince, preferredCity, 5);
 
         LocalDate firstDayOfMonth = LocalDate.now().withDayOfMonth(1);
         YearMonth now = YearMonth.now();
@@ -55,13 +55,13 @@ public class HomeService {
                 .map(CurationInfoDto::from)
                 .toList();
 
-        List<BenefitStoreInfoDto> benefits = storeRepository.findTop5ByProvinceAndCity(regionCond);
+        List<BenefitStoreInfoDto> benefits = storeRepository.findBenefitStoresByProvinceAndCity(regionCond);
 
         List<ProvinceInfoDto> provinces = Arrays.stream(Province.values())
                 .map(ProvinceInfoDto::of)
                 .toList();
 
-        List<ReviewInfoDto> reviews = reviewRepository.findTop5ByProvinceAndCity(regionCond);
+        List<ReviewInfoDto> reviews = reviewRepository.findReviewsByProvinceAndCity(regionCond);
 
         List<AdvertisementInfoDto> advertisements = advertisementRepository.findAll().stream()
                 .map(AdvertisementInfoDto::from)
