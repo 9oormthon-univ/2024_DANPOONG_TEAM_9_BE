@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class ToggleStoreBookmarkRespDto {
 
-    @Schema(description = "총 가게 북마크 수")
+    @Schema(description = "총 가게 북마크 수", example = "123")
     private int count;
     @Schema(description = "해당 유저의 가게 북마크 여부")
     private boolean isBookmarked;

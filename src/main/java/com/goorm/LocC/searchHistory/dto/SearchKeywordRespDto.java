@@ -12,9 +12,12 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class SearchKeywordRespDto {
+    @Schema(description = "기준 시간", example = "2024-11-22T12:11:00")
     private LocalDateTime baseTime;
     private List<RecentKeywordInfoDto> recentKeywords;
+    @Schema(description = "추천 검색어", example = "[\"부산 카페\", \"부산 스테이\"]")
     private List<String> recommendedKeywords;
+    @Schema(description = "인기 검색어", example = "[\"성수\", \"행궁동\", \"감자빵\"]")
     private List<String> popularKeywords;
 
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
