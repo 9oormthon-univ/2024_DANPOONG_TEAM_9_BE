@@ -53,7 +53,6 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PreferredCategory> preferredCategories = new ArrayList<>();
 
-
     @Builder
     public Member(SocialType socialType, String socialId, String username, String profileImageUrl, String email) {
         this.socialType = socialType;

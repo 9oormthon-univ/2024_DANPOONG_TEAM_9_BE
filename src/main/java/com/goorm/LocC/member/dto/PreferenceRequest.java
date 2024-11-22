@@ -9,5 +9,5 @@ import java.util.List;
 @Setter
 public class PreferenceRequest {
     private List<String> categories; // 관심 카테고리
-    private String city; // 선호 도시
+    private String province; // 선호 지역
 }

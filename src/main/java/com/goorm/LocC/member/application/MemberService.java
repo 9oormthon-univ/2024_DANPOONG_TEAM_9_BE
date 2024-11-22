@@ -58,14 +58,19 @@ public class MemberService {
                         member.getPreferredCategories().add(new PreferredCategory(member, Category.valueOf(category)))
                 );
 
-        // 선호 지역 설정 (City로 Province를 추론)
-        City preferredCity = City.valueOf(request.getCity());
-        Province preferredProvince = preferredCity.getProvince(); // City와 연결된 Province 가져오기
+        // 선호 지역 설정 city
+//        City preferredCity = City.valueOf(request.getCity());
+//        Province preferredProvince = preferredCity.getProvince(); // City와 연결된 Province 가져오기
+//        member.setPreferredCity(preferredCity);
+//        member.setPreferredProvince(preferredProvince);
+//        });
+        // 선호 지역 설정 province
 
-        member.setPreferredCity(preferredCity);
+        Province preferredProvince = Province.valueOf(request.getProvince());
         member.setPreferredProvince(preferredProvince);
 
         memberRepository.save(member); // 변경된 데이터 저장
+
     }
 
 }
