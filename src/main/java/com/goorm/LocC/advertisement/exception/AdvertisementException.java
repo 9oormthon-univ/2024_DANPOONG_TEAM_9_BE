@@ -1,17 +1,12 @@
 package com.goorm.LocC.advertisement.exception;
 
+import com.goorm.LocC.global.exception.BaseException;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
 @Getter
-public class AdvertisementException extends RuntimeException {
-
-    private final String code;
-    private final HttpStatus status;
+public class AdvertisementException extends BaseException {
 
     public AdvertisementException(AdvertisementErrorCode errorCode) {
-        super(errorCode.getMessage());
-        this.code = errorCode.getCode();
-        this.status = errorCode.getStatus();
+        super(errorCode);
     }
 }

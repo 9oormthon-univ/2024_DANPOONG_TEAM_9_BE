@@ -7,7 +7,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalTime;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -57,17 +57,15 @@ public class Store extends BaseEntity {
 
     private String content;
 
+    @Column(length = 1024)
+    private String curationCoutent;
+
     private String kakaomapUrl;
 
-    // 아래 필드는 새로 추가한 부분입니다.
-    private LocalTime openTime;
-    private LocalTime closeTime; // 영업 종료 시간
     private Boolean isBookmarked = false; // 북마크 여부
-    private Float distance = 0.0f; // 거리 정보
 
-    public String getKakaomapUrl() {
-        return kakaomapUrl;
-    }
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<StoreImage> images;
 
     public int addDibsCount() {
         dibsCount += 1;

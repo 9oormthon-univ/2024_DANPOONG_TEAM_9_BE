@@ -43,9 +43,10 @@ public class CurationController {
     @GetMapping("/{curationId}")
     public ResponseEntity<ApiResponse<CurationDetailDto>> getCurationDetail(
             @Parameter(description = "큐레이션 ID", example = "1")
-            @PathVariable Long curationId) {
+            @PathVariable Long curationId,
+            @AuthenticationPrincipal CustomUserDetails user) {
         return ResponseEntity.ok(
-                ApiResponse.success(curationService.getCurationDetail(curationId))
+                ApiResponse.success(curationService.getCurationDetail(curationId, user.getEmail()))
         );
     }
 }
