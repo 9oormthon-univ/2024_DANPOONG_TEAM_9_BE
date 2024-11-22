@@ -7,6 +7,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalTime;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -54,6 +56,18 @@ public class Store extends BaseEntity {
     private int dibsCount = 0;
 
     private String content;
+
+    private String kakaomapUrl;
+
+    // 아래 필드는 새로 추가한 부분입니다.
+    private LocalTime openTime;
+    private LocalTime closeTime; // 영업 종료 시간
+    private Boolean isBookmarked = false; // 북마크 여부
+    private Float distance = 0.0f; // 거리 정보
+
+    public String getKakaomapUrl() {
+        return kakaomapUrl;
+    }
 
     public int addDibsCount() {
         dibsCount += 1;

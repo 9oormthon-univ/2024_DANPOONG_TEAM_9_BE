@@ -1,5 +1,6 @@
 package com.goorm.LocC.review.repository;
 
+import com.goorm.LocC.review.domain.Review;
 import com.goorm.LocC.review.dto.ReviewInfoDto;
 import com.goorm.LocC.store.domain.City;
 import com.goorm.LocC.store.domain.Province;
@@ -10,6 +11,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
+
 
 import static com.goorm.LocC.review.domain.QReview.review;
 import static com.goorm.LocC.store.domain.QStore.store;
@@ -50,5 +53,16 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
 
     private BooleanExpression eqCity(City city) {
         return city != null ? store.city.eq(city) : null;
+    }
+
+    @Override
+    public Optional<Review> findReviewDetailById(Long reviewId) {
+        Review foundReview = queryFactory
+                .selectFrom(review)
+                .join(review.store, store).fetchJoin()
+                .where(review.reviewId.eq(reviewId))
+                .fetchOne();
+
+        return Optional.ofNullable(foundReview);
     }
 }

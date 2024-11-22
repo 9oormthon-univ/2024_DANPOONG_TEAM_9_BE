@@ -4,10 +4,10 @@ import com.goorm.LocC.global.common.entity.BaseEntity;
 import com.goorm.LocC.store.domain.City;
 import com.goorm.LocC.store.domain.Province;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.goorm.LocC.member.domain.Role.USER;
 
@@ -42,11 +42,16 @@ public class Member extends BaseEntity {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Setter
     @Enumerated(EnumType.STRING)
     private Province preferredProvince;
 
+    @Setter
     @Enumerated(EnumType.STRING)
     private City preferredCity;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PreferredCategory> preferredCategories = new ArrayList<>();
 
     @Builder
     public Member(SocialType socialType, String socialId, String username, String profileImageUrl, String email) {
