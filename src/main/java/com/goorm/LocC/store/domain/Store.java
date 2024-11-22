@@ -63,8 +63,6 @@ public class Store extends BaseEntity {
 
     private String kakaomapUrl;
 
-    private Boolean isBookmarked = false; // 북마크 여부
-
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StoreImage> images;
 
