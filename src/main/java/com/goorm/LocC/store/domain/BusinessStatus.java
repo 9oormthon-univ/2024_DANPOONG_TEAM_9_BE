@@ -49,12 +49,9 @@ public enum BusinessStatus {
         if (isHoliday) {
             return HOLIDAY;
         }
-        // openTime 또는 closeTime이 null인 경우 CLOSE 상태 반환
-        if (openTime == null || closeTime == null) {
-            return CLOSE;
-        }
         LocalTime now = LocalTime.now();
         return now.isAfter(openTime) && now.isBefore(closeTime) ? OPEN : CLOSE;
+        // openTime, closeTime -> NotNULL
     }
 }
 
