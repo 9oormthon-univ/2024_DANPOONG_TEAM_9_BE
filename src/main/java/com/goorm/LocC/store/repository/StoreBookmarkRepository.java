@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface StoreBookmarkRepository extends JpaRepository<StoreBookmark, Long>, StoreBookmarkRepositoryCustom {
 
     Optional<StoreBookmark> findStoreBookmarkByMemberAndStore(Member member, Store store);
+    boolean existsByMemberAndStore(Member member, Store store);
 }
