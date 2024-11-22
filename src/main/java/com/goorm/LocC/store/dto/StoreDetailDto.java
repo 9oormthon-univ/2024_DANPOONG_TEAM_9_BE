@@ -15,7 +15,7 @@ public class StoreDetailDto {
     private CurationStoreInfoDto storeInfo;
 
     @Schema(description = "북마크 여부", example = "true")
-    private Boolean isBookmarked;
+    private boolean isBookmarked;
 
 //    @Schema(description = "현재 위치로부터의 거리 (km)", example = "1.2")
 //    private Float distance;
