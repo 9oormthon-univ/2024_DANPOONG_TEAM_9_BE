@@ -19,9 +19,14 @@ public class CurationDetailDto {
     @Schema(description = "큐레이션에 포함된 스토어 리스트")
     private List<StoreDetailDto> stores;
 
+    @Schema(description = "해당 유저의 큐레이션 북마크 여부")
+    private boolean isBookmarked;
+
     @Builder
-    public CurationDetailDto(CurationInfoDto curationInfo, List<StoreDetailDto> stores) {
+
+    public CurationDetailDto(CurationInfoDto curationInfo, List<StoreDetailDto> stores, boolean isBookmarked) {
         this.curationInfo = curationInfo;
         this.stores = stores;
+        this.isBookmarked = isBookmarked;
     }
 }

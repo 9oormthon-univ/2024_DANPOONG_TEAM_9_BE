@@ -42,7 +42,6 @@ public class CurationService {
     private final CurationBookmarkRepository curationBookmarkRepository;
     private final StoreRepository storeRepository; // 스토어 관련 데이터 조회를 위한 Repository 추가
     private final BusinessHourRepository businessHourRepository;
-    private final CurationBookmarkRepository bookmarkRepository;
     private final StoreBookmarkRepository storeBookmarkRepository;
 
     // 북마크 토글 기능
@@ -80,6 +79,9 @@ public class CurationService {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
 
+        // 큐레이션 북마크 여부 조회
+        boolean isCurationBookmarked = curationBookmarkRepository.existsByMemberAndCuration(member, curation);
+
         // 큐레이션에 포함된 스토어 정보 조회
         List<Store> stores = storeRepository.findByCuration_CurationId(curationId);
 
@@ -109,6 +111,7 @@ public class CurationService {
 
         // 응답 DTO 생성
         return CurationDetailDto.builder()
+                .isBookmarked(isCurationBookmarked)
                 .curationInfo(curationInfoDto)
                 .stores(storeDetails)
                 .build();

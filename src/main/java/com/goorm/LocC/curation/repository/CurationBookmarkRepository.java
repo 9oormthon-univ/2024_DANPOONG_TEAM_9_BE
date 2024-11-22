@@ -9,4 +9,5 @@ import java.util.Optional;
 
 public interface CurationBookmarkRepository extends JpaRepository<CurationBookmark, Long>, CurationBookmarkRepositoryCustom {
     Optional<CurationBookmark> findCurationBookmarkByMemberAndCuration(Member member, Curation curation);
+    boolean existsByMemberAndCuration(Member member, Curation curation);
 }
