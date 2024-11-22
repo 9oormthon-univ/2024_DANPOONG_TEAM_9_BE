@@ -110,6 +110,7 @@ public class StoreService {
                             store.getCategory(),
                             store.getProvince(),
                             store.getCity(),
+                            store.getAddress(),
                             store.getThumbnailImageUrl(),
                             store.getRating(),
                             store.getReviewCount(),
