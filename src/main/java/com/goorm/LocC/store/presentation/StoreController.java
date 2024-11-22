@@ -3,6 +3,10 @@ package com.goorm.LocC.store.presentation;
 import com.goorm.LocC.auth.dto.CustomUserDetails;
 import com.goorm.LocC.global.common.dto.ApiResponse;
 import com.goorm.LocC.store.application.StoreService;
+import com.goorm.LocC.store.domain.Category;
+import com.goorm.LocC.store.domain.City;
+import com.goorm.LocC.store.domain.Province;
+import com.goorm.LocC.store.dto.StoreInfoDto;
 import com.goorm.LocC.store.dto.ToggleStoreBookmarkRespDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -10,10 +14,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Tag(name = "가게", description = "가게 관련 API")
 @RequiredArgsConstructor
@@ -35,4 +38,18 @@ public class StoreController {
                 ApiResponse.success(storeService.toggleBookmark(storeId, user.getEmail()))
         );
     }
+
+    @Operation(summary = "가게 리스트 조회", description = "카테고리, 지역, 검색어 등으로 가게 리스트를 조회합니다.")
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<StoreInfoDto>>> getStores(
+            @Parameter(description = "카테고리") @RequestParam(required = false) Category category,
+            @Parameter(description = "도/광역시") @RequestParam(required = false) Province province,
+            @Parameter(description = "시/군/구") @RequestParam(required = false) City city,
+            @Parameter(description = "가게 이름") @RequestParam(required = false) String storeName,
+            @Parameter(description = "정렬 기준", example = "name") @RequestParam(defaultValue = "name") String sortBy
+    ) {
+        List<StoreInfoDto> stores = storeService.findStores(category, province, city, storeName, sortBy);
+        return ResponseEntity.ok(ApiResponse.success(stores));
+    }
+
 }

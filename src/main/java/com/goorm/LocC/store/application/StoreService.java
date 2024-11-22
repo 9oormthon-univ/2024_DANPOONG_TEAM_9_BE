@@ -4,17 +4,20 @@ import com.goorm.LocC.member.domain.Member;
 import com.goorm.LocC.member.exception.MemberException;
 import com.goorm.LocC.member.repository.MemberRepository;
 import com.goorm.LocC.searchHistory.repository.SearchHistoryRepository;
-import com.goorm.LocC.store.domain.Store;
-import com.goorm.LocC.store.domain.StoreBookmark;
+import com.goorm.LocC.store.domain.*;
+import com.goorm.LocC.store.dto.StoreInfoDto;
 import com.goorm.LocC.store.dto.ToggleStoreBookmarkRespDto;
 import com.goorm.LocC.store.exception.StoreException;
 import com.goorm.LocC.store.repository.StoreBookmarkRepository;
 import com.goorm.LocC.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.goorm.LocC.member.exception.MemberErrorCode.MEMBER_NOT_FOUND;
 import static com.goorm.LocC.store.exception.StoreErrorCode.STORE_NOT_FOUND;
@@ -55,6 +58,30 @@ public class StoreService {
                     .build();
         }
     }
+
+    // 가게 리스트 조회 기능
+    public List<StoreInfoDto> findStores(Category category, Province province, City city, String storeName, String sortBy) {
+        // Repository 호출하여 데이터 조회
+        List<Store> stores = storeRepository.findStoresByFilters(category, province, city, storeName, Sort.by(sortBy));
+
+        // 결과를 StoreInfoDto로 변환하여 반환
+        return stores.stream()
+                .map(store -> new StoreInfoDto(
+                        store.getStoreId(),
+                        store.getName(),
+                        store.getCategory(),
+                        store.getProvince(),
+                        store.getCity(),
+                        store.getThumbnailImageUrl(),
+                        store.getRating(),
+                        store.getReviewCount(),
+                        store.getOpenTime(),
+                        store.getCloseTime(),
+                        store.getIsHoliday()
+                ))
+                .collect(Collectors.toList());
+    }
+
 
     private Member findMemberByEmail(String email) {
         return memberRepository.findByEmail(email)

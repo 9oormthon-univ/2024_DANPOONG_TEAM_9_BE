@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @Getter
@@ -66,6 +67,15 @@ public class Store extends BaseEntity {
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StoreImage> images;
+
+    @Column(nullable = false)
+    private LocalTime openTime;
+
+    @Column(nullable = false)
+    private LocalTime closeTime;
+
+    @Column(nullable = false)
+    private Boolean isHoliday; // 휴일 여부
 
     public int addDibsCount() {
         dibsCount += 1;
