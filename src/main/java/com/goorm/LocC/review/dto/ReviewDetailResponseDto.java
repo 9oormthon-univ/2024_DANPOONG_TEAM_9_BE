@@ -52,9 +52,6 @@ public class ReviewDetailResponseDto {
         this.image = image;
         this.isLiked = isLiked;
         this.likeCount = likeCount;
-        this.isBookmarked = isBookmarked;
-        this.dibsCount = dibsCount;
-        this.shareCount = shareCount;
         this.visitDate = visitDate;
         this.kakaomapUrl = kakaomapUrl;
     }
