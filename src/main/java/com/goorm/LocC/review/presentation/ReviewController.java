@@ -41,9 +41,10 @@ public class ReviewController {
 
     // 추가된 개별 리뷰 상세 조회 API
     @Operation(summary = "개별 리뷰 상세 조회", description = "storeId로 리뷰 상세 정보를 조회합니다.")
-    @GetMapping("/api/v1/reviews")
+    @GetMapping
     public ResponseEntity<ApiResponse<ReviewDetailResponseDto>> getReviewDetail(
-            @Parameter(description = "스토어 ID", example = "1") @RequestParam Long storeId
+            @Parameter(description = "스토어 ID", example = "1")
+            @RequestParam Long storeId
     ) {
         ReviewDetailResponseDto reviewDetail = reviewService.getReviewDetail(storeId);
         return ResponseEntity.ok(ApiResponse.success(reviewDetail));
