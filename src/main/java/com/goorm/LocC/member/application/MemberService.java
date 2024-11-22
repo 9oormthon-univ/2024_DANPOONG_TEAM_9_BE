@@ -51,12 +51,18 @@ public class MemberService {
                 .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
 
         // 관심 카테고리 설정 (최대 2개)
-        member.getPreferredCategories().clear();
+//        member.getPreferredCategories().clear();
+//        request.getCategories().stream()
+//                .limit(2)
+//                .forEach(category ->
+//                        member.getPreferredCategories().add(new PreferredCategory(member, Category.valueOf(category)))
+//                );
+        member.getPreferredCategories().clear(); // 기존 카테고리 제거
         request.getCategories().stream()
-                .limit(2)
-                .forEach(category ->
-                        member.getPreferredCategories().add(new PreferredCategory(member, Category.valueOf(category)))
-                );
+                .limit(2) // 최대 2개만 처리
+                .forEach(category -> member.getPreferredCategories().add(new PreferredCategory(member, category)));
+
+
 
         // 선호 지역 설정 city
 //        City preferredCity = City.valueOf(request.getCity());
@@ -64,11 +70,9 @@ public class MemberService {
 //        member.setPreferredCity(preferredCity);
 //        member.setPreferredProvince(preferredProvince);
 //        });
+
         // 선호 지역 설정 province
-
-        Province preferredProvince = Province.valueOf(request.getProvince());
-        member.setPreferredProvince(preferredProvince);
-
+        member.setPreferredProvince(request.getProvince());
         memberRepository.save(member); // 변경된 데이터 저장
 
     }
