@@ -23,4 +23,9 @@ public class PreferredCategory extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Category category;
+
+    public PreferredCategory(Member member, Category category) {
+        this.member = member;
+        this.category = category;
+    }
 }
