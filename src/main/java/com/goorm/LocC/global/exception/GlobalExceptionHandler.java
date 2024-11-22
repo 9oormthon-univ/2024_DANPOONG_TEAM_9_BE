@@ -1,7 +1,9 @@
 package com.goorm.LocC.global.exception;
 
 import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
+import com.goorm.LocC.advertisement.exception.AdvertisementException;
 import com.goorm.LocC.auth.exception.AuthException;
+import com.goorm.LocC.curation.exception.CurationException;
 import com.goorm.LocC.global.common.dto.ApiResponse;
 import com.goorm.LocC.member.exception.MemberException;
 import com.goorm.LocC.review.exception.ReviewException;
@@ -75,6 +77,21 @@ public class GlobalExceptionHandler {
 
         return e.getErrorCode().toResponseEntity();
     }
+
+    @ExceptionHandler(CurationException.class)
+    public ResponseEntity<ApiResponse<Void>> handleCurationException(CurationException e) {
+        log.warn("Curation Exception: {}", e.getMessage());
+
+        return e.getErrorCode().toResponseEntity();
+    }
+
+    @ExceptionHandler(AdvertisementException.class)
+    public ResponseEntity<ApiResponse<Void>> handleAdvertisementException(AdvertisementException e) {
+        log.warn("Advertisement Exception: {}", e.getMessage());
+
+        return e.getErrorCode().toResponseEntity();
+    }
+
 
     @ExceptionHandler(SearchHistoryException.class)
     public ResponseEntity<ApiResponse<Void>> handleSearchHistoryException(SearchHistoryException e) {
