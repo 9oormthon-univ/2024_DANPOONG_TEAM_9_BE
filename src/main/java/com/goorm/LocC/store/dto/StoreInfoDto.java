@@ -42,7 +42,7 @@
         @Schema(description = "영업 상태", example = "영업중")
         private BusinessStatus businessStatus;
 
-        public StoreInfoDto(Long storeId, String name, Category category, Province province, City city, String imageUrl, float rating, int reviewCount, LocalTime openTime, LocalTime closeTime, Boolean isHoliday) {
+        public StoreInfoDto(Long storeId, String name, Category category, Province province, City city, String imageUrl, float rating, int reviewCount, LocalTime openTime, LocalTime closeTime, Boolean isHoliday, BusinessStatus businessStatus) {
             this.storeId = storeId;
             this.name = name;
             this.category = category;

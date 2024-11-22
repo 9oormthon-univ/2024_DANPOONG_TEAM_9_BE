@@ -56,9 +56,6 @@ public enum BusinessStatus {
         LocalTime now = LocalTime.now();
         return now.isAfter(openTime) && now.isBefore(closeTime) ? OPEN : CLOSE;
     }
-
-
-
 }
 
 

@@ -23,7 +23,7 @@ public interface StoreRepository extends JpaRepository<Store, Long>, StoreReposi
             "(:city IS NULL OR s.city = :city) AND " +
             "(:storeName IS NULL OR s.name LIKE %:storeName%)")
     List<Store> findStoresByFilters(
-            @Param("category") Category category,
+            @Param("category") List<Category> category,
             @Param("province") Province province,
             @Param("city") City city,
             @Param("storeName") String storeName,

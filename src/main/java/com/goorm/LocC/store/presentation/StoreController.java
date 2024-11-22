@@ -42,7 +42,7 @@ public class StoreController {
     @Operation(summary = "가게 리스트 조회", description = "카테고리, 지역, 검색어 등으로 가게 리스트를 조회합니다.")
     @GetMapping
     public ResponseEntity<ApiResponse<List<StoreInfoDto>>> getStores(
-            @Parameter(description = "카테고리") @RequestParam(required = false) Category category,
+            @Parameter(description = "카테고리") @RequestParam(required = false) List<Category> category,
             @Parameter(description = "도/광역시") @RequestParam(required = false) Province province,
             @Parameter(description = "시/군/구") @RequestParam(required = false) City city,
             @Parameter(description = "가게 이름") @RequestParam(required = false) String storeName,
