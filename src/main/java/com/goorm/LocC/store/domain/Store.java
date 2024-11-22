@@ -7,7 +7,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalTime;
 import java.util.List;
 
 @Getter
@@ -65,8 +64,6 @@ public class Store extends BaseEntity {
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StoreImage> images;
-
-
 
     public int addDibsCount() {
         dibsCount += 1;
