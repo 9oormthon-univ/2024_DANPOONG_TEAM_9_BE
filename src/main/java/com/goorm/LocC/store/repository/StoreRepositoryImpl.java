@@ -1,8 +1,9 @@
 package com.goorm.LocC.store.repository;
 
-import com.goorm.LocC.store.dto.BenefitStoreInfoDto;
 import com.goorm.LocC.store.domain.City;
 import com.goorm.LocC.store.domain.Province;
+import com.goorm.LocC.store.domain.Store;
+import com.goorm.LocC.store.dto.BenefitStoreInfoDto;
 import com.goorm.LocC.store.dto.RegionCond;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -41,6 +42,15 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
                 .fetch();
     }
 
+    public List<Store> findStoresByProvince(NearStoreCond condition) {
+        return queryFactory
+                .selectFrom(store)
+                .where(eqProvince(condition.getProvince()),
+                        store.ne(condition.getExcludeStore()))
+                .limit(condition.getLimit())
+                .fetch();
+    }
+
     private BooleanExpression eqProvince(Province province) {
         return province != null ? store.province.eq(province) : null;
     }
@@ -48,4 +58,5 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
     private BooleanExpression eqCity(City city) {
         return city != null ? store.city.eq(city) : null;
     }
+
 }
