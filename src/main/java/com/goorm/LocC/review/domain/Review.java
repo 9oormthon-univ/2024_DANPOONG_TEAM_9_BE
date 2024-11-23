@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -39,6 +40,9 @@ public class Review extends BaseEntity {
 
     @Column(nullable = false)
     private LocalDate visitedDate;
+
+    @OneToMany(mappedBy = "review")
+    private List<ReviewImage> reviewImage;
 
     public int addLikeCount() {
         likeCount += 1;

@@ -4,7 +4,7 @@ import com.goorm.LocC.curation.domain.Curation;
 import com.goorm.LocC.curation.domain.CurationBookmark;
 import com.goorm.LocC.curation.dto.CurationDetailDto;
 import com.goorm.LocC.curation.dto.CurationInfoDto;
-import com.goorm.LocC.curation.dto.CurationStoreInfoDto;
+import com.goorm.LocC.store.dto.CurationStoreInfoDto;
 import com.goorm.LocC.curation.dto.ToggleCurationBookmarkRespDto;
 import com.goorm.LocC.curation.exception.CurationException;
 import com.goorm.LocC.curation.repository.CurationBookmarkRepository;

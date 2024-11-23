@@ -1,4 +1,4 @@
-package com.goorm.LocC.curation.dto;
+package com.goorm.LocC.store.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.goorm.LocC.store.domain.*;
@@ -14,15 +14,17 @@ import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class CurationStoreInfoDto {
+public class NearStoreInfoDto {
 
         @Schema(description = "가게 ID", example = "1")
         private Long storeId;
         @Schema(description = "가게 이름", example = "로슈아커피")
         private String name;
+        @Schema(description = "북마크 여부", example = "true")
+        private boolean isBookmarked;
         @Schema(description = "가게 카테고리", example = "카페")
         private Category category;
-        @Schema(description = "가게 이미지", example = "[ \"https://image1.jpg\"], \"https://image2.jpg\"]")
+        @Schema(description = "가게 이미지", example = "[\"https://image1.jpg\", \"https://image2.jpg\"]")
         private List<String> images;
         @Schema(description = "리뷰 평점", example = "4.42")
         private float rating;
@@ -38,9 +40,10 @@ public class CurationStoreInfoDto {
         private BusinessStatus businessStatus;
 
         @Builder
-        public CurationStoreInfoDto(Long storeId, String name, Category category, List<String> images, float rating, int reviewCount, LocalTime openTime, LocalTime closeTime, BusinessStatus businessStatus) {
+        public NearStoreInfoDto(Long storeId, String name, boolean isBookmarked, Category category, List<String> images, float rating, int reviewCount, LocalTime openTime, LocalTime closeTime, BusinessStatus businessStatus) {
             this.storeId = storeId;
             this.name = name;
+            this.isBookmarked = isBookmarked;
             this.category = category;
             this.images = images;
             this.rating = rating;
@@ -50,20 +53,20 @@ public class CurationStoreInfoDto {
             this.businessStatus = businessStatus;
         }
 
-
-        public static CurationStoreInfoDto of(Store store, BusinessHour businessHour) {
+    public static NearStoreInfoDto of(Store store, BusinessHour businessHour, boolean isBookmarked) {
             List<String> imageUrls = new ArrayList<>();
             imageUrls.add(store.getThumbnailImageUrl());
             imageUrls.addAll(store.getImages().stream()
                     .map(StoreImage::getImageUrl)
                     .toList());
 
-            return CurationStoreInfoDto.builder()
+            return NearStoreInfoDto.builder()
                     .storeId(store.getStoreId())
                     .name(store.getName())
+                    .isBookmarked(isBookmarked)
                     .category(store.getCategory())
                     .images(imageUrls)
-                    .rating(store.getRating())
+                    .rating(Math.round(store.getRating() * 100) / 100.0f)
                     .reviewCount(store.getReviewCount())
                     .openTime(businessHour.getOpenTime())
                     .closeTime(businessHour.getCloseTime())

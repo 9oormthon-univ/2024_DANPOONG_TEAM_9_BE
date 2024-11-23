@@ -3,20 +3,31 @@ package com.goorm.LocC.store.application;
 import com.goorm.LocC.member.domain.Member;
 import com.goorm.LocC.member.exception.MemberException;
 import com.goorm.LocC.member.repository.MemberRepository;
+import com.goorm.LocC.review.repository.ReviewRepository;
 import com.goorm.LocC.searchHistory.repository.SearchHistoryRepository;
 import com.goorm.LocC.store.domain.*;
+import com.goorm.LocC.store.dto.DetailStoreResp;
+import com.goorm.LocC.store.dto.DetailStoreResp.SimpleReviewInfo;
+import com.goorm.LocC.store.dto.NearStoreInfoDto;
 import com.goorm.LocC.store.dto.StoreInfoDto;
 import com.goorm.LocC.store.dto.ToggleStoreBookmarkRespDto;
 import com.goorm.LocC.store.exception.StoreException;
 import com.goorm.LocC.store.repository.BusinessHourRepository;
+import com.goorm.LocC.store.repository.NearStoreCond;
 import com.goorm.LocC.store.repository.StoreBookmarkRepository;
 import com.goorm.LocC.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.goorm.LocC.member.exception.MemberErrorCode.MEMBER_NOT_FOUND;
 import static com.goorm.LocC.store.exception.StoreErrorCode.STORE_NOT_FOUND;
@@ -24,6 +35,7 @@ import static com.goorm.LocC.store.exception.StoreErrorCode.STORE_NOT_FOUND;
 @RequiredArgsConstructor
 @Transactional
 @Service
+@Slf4j
 public class StoreService {
 
     private final MemberRepository memberRepository;
@@ -31,6 +43,7 @@ public class StoreService {
     private final StoreBookmarkRepository storeBookmarkRepository;
     private final BusinessHourRepository businessHourRepository;
     private final SearchHistoryRepository searchHistoryRepository;
+    private final ReviewRepository reviewRepository;
 
     public ToggleStoreBookmarkRespDto toggleBookmark(Long storeId, String email) {
         Member member = findMemberByEmail(email);
@@ -122,8 +135,47 @@ public class StoreService {
         return null;
     }
 
-    public DetailStoreResp findById(Long storeId) {
+    public DetailStoreResp findById(Long storeId, String email) {
+        Member member = findMemberByEmail(email);
+        Store store = storeRepository.findById(storeId)
+                .orElseThrow(() -> new StoreException(STORE_NOT_FOUND));
 
-        return null;
+        boolean isStoreBookmarked = storeBookmarkRepository.existsByMemberAndStore(member, store);
+
+        List<DetailStoreResp.BusinessHourInfo> businessHours = businessHourRepository.findBusinessHourByStoreOrderByDayOfWeek(store)
+                .stream()
+                .sorted(Comparator.comparingInt(b -> b.getDayOfWeek().getValue()))
+                .map(DetailStoreResp.BusinessHourInfo::from)
+                .toList();
+
+        List<SimpleReviewInfo> reviews = reviewRepository.findSimpleReviewsByStore(store);
+
+        NearStoreCond condition = NearStoreCond.builder()
+                .province(store.getProvince())
+                .excludeStore(store)
+                .limit(3)
+                .build();
+
+        List<Store> stores = storeRepository.findStoresByProvince(condition);
+        DayOfWeek now = LocalDate.now().getDayOfWeek();
+        List<BusinessHour> nearStoresBusinessHours = businessHourRepository.findBusinessHourByStoreInAndDayOfWeek(stores, now);
+
+        // 가게, 영업 시간 매핑
+        Map<Store, BusinessHour> storeBusinessHourMap = nearStoresBusinessHours.stream()
+                .collect(Collectors.toMap(
+                        BusinessHour::getStore, // Store를 키로 사용
+                        bh -> bh // BusinessHour를 값으로 사용
+                ));
+
+        List<NearStoreInfoDto> nearbyStores = storeBusinessHourMap.entrySet().stream()
+                .map(
+                    entry -> {
+                        boolean isBookmarked = storeBookmarkRepository.existsByMemberAndStore(member, entry.getKey());
+                        return NearStoreInfoDto.of(entry.getKey(), entry.getValue(), isBookmarked);
+                    }
+                )
+                .toList();
+
+        return DetailStoreResp.of(store, isStoreBookmarked, businessHours, reviews, nearbyStores);
     }
 }

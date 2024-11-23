@@ -6,6 +6,7 @@ import com.goorm.LocC.store.application.StoreService;
 import com.goorm.LocC.store.domain.Category;
 import com.goorm.LocC.store.domain.City;
 import com.goorm.LocC.store.domain.Province;
+import com.goorm.LocC.store.dto.DetailStoreResp;
 import com.goorm.LocC.store.dto.StoreInfoDto;
 import com.goorm.LocC.store.dto.ToggleStoreBookmarkRespDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -54,12 +55,13 @@ public class StoreController {
 
     @Operation(summary = "가게 상세 조회", description = "가게 ID로 가게 상세 정보를 조회합니다.")
     @GetMapping("/{storeId}")
-    public ResponseEntity<ApiResponse<Void>> getStoreById(
+    public ResponseEntity<ApiResponse<DetailStoreResp>> getStoreById(
             @Parameter(description = "가게 ID", example = "1")
-            @PathVariable Long storeId
+            @PathVariable Long storeId,
+            @AuthenticationPrincipal CustomUserDetails user
     ) {
-        storeService.findById(storeId);
-//        return ResponseEntity.ok(ApiResponse.success());
-        return null;
+        return ResponseEntity.ok(ApiResponse.success(
+                storeService.findById(storeId, user.getEmail())
+        ));
     }
 }

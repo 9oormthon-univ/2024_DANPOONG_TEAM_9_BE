@@ -1,6 +1,5 @@
 package com.goorm.LocC.store.dto;
 
-import com.goorm.LocC.curation.dto.CurationStoreInfoDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.Builder;
