@@ -7,14 +7,14 @@ import com.goorm.LocC.review.repository.ReviewRepository;
 import com.goorm.LocC.searchHistory.domain.SearchHistory;
 import com.goorm.LocC.searchHistory.repository.SearchHistoryRepository;
 import com.goorm.LocC.store.domain.*;
-import com.goorm.LocC.store.dto.response.DetailStoreRespDto;
-import com.goorm.LocC.store.dto.response.DetailStoreRespDto.SimpleReviewInfo;
 import com.goorm.LocC.store.dto.NearStoreInfoDto;
 import com.goorm.LocC.store.dto.StoreInfoDto;
+import com.goorm.LocC.store.dto.condition.NearStoreCond;
+import com.goorm.LocC.store.dto.response.DetailStoreRespDto;
+import com.goorm.LocC.store.dto.response.DetailStoreRespDto.SimpleReviewInfo;
 import com.goorm.LocC.store.dto.response.ToggleStoreBookmarkRespDto;
 import com.goorm.LocC.store.exception.StoreException;
 import com.goorm.LocC.store.repository.BusinessHourRepository;
-import com.goorm.LocC.store.dto.condition.NearStoreCond;
 import com.goorm.LocC.store.repository.StoreBookmarkRepository;
 import com.goorm.LocC.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -98,41 +97,12 @@ public class StoreService {
         // 가게, 영업 시간 매핑
         Map<Store, BusinessHour> storeBusinessHourMap = businessHours.stream()
                 .collect(Collectors.toMap(
-                        BusinessHour::getStore, // Store를 키로 사용
-                        bh -> bh // BusinessHour를 값으로 사용
+                        BusinessHour::getStore, // key: Store
+                        bh -> bh // value: BusinessHour
                 ));
 
-        return stores.stream()
-                .map(store -> {
-                    BusinessHour businessHour = storeBusinessHourMap.get(store);
-                    LocalTime openTime = null;
-                    LocalTime closeTime = null;
-                    Boolean isHoliday = false;
-                    BusinessStatus businessStatus = BusinessStatus.CLOSE;
-
-                    if (businessHour != null) {
-                        openTime = businessHour.getOpenTime();
-                        closeTime = businessHour.getCloseTime();
-                        isHoliday = businessHour.getIsHoliday();
-                        businessStatus = BusinessStatus.checkBusinessStatus(isHoliday, openTime, closeTime);
-                    }
-
-                    return new StoreInfoDto(
-                            store.getStoreId(),
-                            store.getName(),
-                            store.getCategory(),
-                            store.getProvince(),
-                            store.getCity(),
-                            store.getAddress(),
-                            store.getThumbnailImageUrl(),
-                            store.getRating(),
-                            store.getReviewCount(),
-                            openTime,
-                            closeTime,
-                            isHoliday,
-                            businessStatus
-                    );
-                })
+        return storeBusinessHourMap.entrySet().stream()
+                .map(e -> StoreInfoDto.of(e.getKey(), e.getValue()))
                 .collect(Collectors.toList());
     }
 
