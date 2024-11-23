@@ -4,7 +4,7 @@ import com.goorm.LocC.advertisement.dto.AdvertisementInfoDto;
 import com.goorm.LocC.advertisement.repository.AdvertisementRepository;
 import com.goorm.LocC.curation.dto.CurationInfoDto;
 import com.goorm.LocC.curation.repository.CurationRepository;
-import com.goorm.LocC.home.dto.HomeInfoResp;
+import com.goorm.LocC.home.dto.response.HomeInfoResp;
 import com.goorm.LocC.home.dto.ProvinceInfoDto;
 import com.goorm.LocC.member.domain.Member;
 import com.goorm.LocC.member.exception.MemberException;
@@ -14,7 +14,7 @@ import com.goorm.LocC.review.repository.ReviewRepository;
 import com.goorm.LocC.store.domain.City;
 import com.goorm.LocC.store.domain.Province;
 import com.goorm.LocC.store.dto.BenefitStoreInfoDto;
-import com.goorm.LocC.store.dto.RegionCond;
+import com.goorm.LocC.store.dto.condition.RegionCond;
 import com.goorm.LocC.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -55,13 +55,13 @@ public class HomeService {
                 .map(CurationInfoDto::from)
                 .toList();
 
-        List<BenefitStoreInfoDto> benefits = storeRepository.findBenefitStoresByProvinceAndCity(regionCond);
+        List<BenefitStoreInfoDto> benefits = storeRepository.findBenefitStoreInfoDtosByProvinceAndCity(regionCond);
 
         List<ProvinceInfoDto> provinces = Arrays.stream(Province.values())
                 .map(ProvinceInfoDto::of)
                 .toList();
 
-        List<ReviewInfoDto> reviews = reviewRepository.findReviewsByProvinceAndCity(regionCond);
+        List<ReviewInfoDto> reviews = reviewRepository.findReviewInfoDtosByProvinceAndCity(regionCond);
 
         List<AdvertisementInfoDto> advertisements = advertisementRepository.findAll().stream()
                 .map(AdvertisementInfoDto::from)

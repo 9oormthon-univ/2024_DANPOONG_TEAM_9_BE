@@ -3,7 +3,7 @@ package com.goorm.LocC.searchHistory.presentation;
 import com.goorm.LocC.auth.dto.CustomUserDetails;
 import com.goorm.LocC.global.common.dto.ApiResponse;
 import com.goorm.LocC.searchHistory.application.SearchHistoryService;
-import com.goorm.LocC.searchHistory.dto.SearchKeywordRespDto;
+import com.goorm.LocC.searchHistory.dto.response.SearchKeywordRespDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;

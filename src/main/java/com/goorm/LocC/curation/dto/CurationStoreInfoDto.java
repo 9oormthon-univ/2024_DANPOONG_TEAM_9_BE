@@ -1,4 +1,4 @@
-package com.goorm.LocC.store.dto;
+package com.goorm.LocC.curation.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class StoreDetailDto {
+public class CurationStoreInfoDto {
 
     @Schema(description = "가게 기본 정보")
-    private CurationStoreInfoDto storeInfo;
+    private CurationStoreBasicInfoDto storeInfo;
 
     @Schema(description = "북마크 여부", example = "true")
     private boolean isBookmarked;
@@ -23,7 +23,7 @@ public class StoreDetailDto {
     private String summary;
 
     @Builder
-    public StoreDetailDto(CurationStoreInfoDto storeInfo, Boolean isBookmarked, String summary) {
+    public CurationStoreInfoDto(CurationStoreBasicInfoDto storeInfo, Boolean isBookmarked, String summary) {
         this.storeInfo = storeInfo;
         this.isBookmarked = isBookmarked;
         this.summary = summary;

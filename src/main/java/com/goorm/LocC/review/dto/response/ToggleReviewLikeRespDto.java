@@ -1,4 +1,4 @@
-package com.goorm.LocC.review.dto;
+package com.goorm.LocC.review.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;

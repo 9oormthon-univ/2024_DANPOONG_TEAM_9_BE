@@ -2,8 +2,8 @@ package com.goorm.LocC.curation.presentation;
 
 import com.goorm.LocC.auth.dto.CustomUserDetails;
 import com.goorm.LocC.curation.application.CurationService;
-import com.goorm.LocC.curation.dto.CurationDetailDto;
-import com.goorm.LocC.curation.dto.ToggleCurationBookmarkRespDto;
+import com.goorm.LocC.curation.dto.response.DetailCurationRespDto;
+import com.goorm.LocC.curation.dto.response.ToggleCurationBookmarkRespDto;
 import com.goorm.LocC.global.common.dto.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -41,7 +41,7 @@ public class CurationController {
     // 큐레이션 상세 조회 기능
     @Operation(summary = "큐레이션 상세 조회", description = "큐레이션의 상세 정보를 반환합니다.")
     @GetMapping("/{curationId}")
-    public ResponseEntity<ApiResponse<CurationDetailDto>> getCurationDetail(
+    public ResponseEntity<ApiResponse<DetailCurationRespDto>> getCurationDetail(
             @Parameter(description = "큐레이션 ID", example = "1")
             @PathVariable Long curationId,
             @AuthenticationPrincipal CustomUserDetails user) {

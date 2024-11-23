@@ -1,4 +1,4 @@
-package com.goorm.LocC.store.dto;
+package com.goorm.LocC.store.dto.condition;
 
 import com.goorm.LocC.store.domain.City;
 import com.goorm.LocC.store.domain.Province;

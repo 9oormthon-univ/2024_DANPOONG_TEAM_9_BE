@@ -4,12 +4,12 @@ import com.goorm.LocC.curation.dto.CurationInfoDto;
 import com.goorm.LocC.curation.repository.CurationBookmarkRepository;
 import com.goorm.LocC.member.domain.Member;
 import com.goorm.LocC.member.domain.PreferredCategory;
-import com.goorm.LocC.member.dto.MemberCond;
-import com.goorm.LocC.member.dto.PreferenceRequest;
-import com.goorm.LocC.member.dto.ProfileInfoRespDto;
+import com.goorm.LocC.member.dto.condition.MemberCond;
+import com.goorm.LocC.member.dto.request.PreferenceReqDto;
+import com.goorm.LocC.member.dto.response.ProfileInfoRespDto;
 import com.goorm.LocC.member.exception.MemberException;
 import com.goorm.LocC.member.repository.MemberRepository;
-import com.goorm.LocC.store.dto.StoreInfoDto;
+import com.goorm.LocC.store.dto.SimpleStoreInfoDto;
 import com.goorm.LocC.store.repository.StoreBookmarkRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,14 +36,14 @@ public class MemberService {
                 .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
 
         MemberCond condition = new MemberCond(member);
-        List<CurationInfoDto> curations = curationBookmarkRepository.findCurationsByMember(condition);
-        List<StoreInfoDto> stores = storeBookmarkRepository.searchStoresByMember(condition);
+        List<CurationInfoDto> curations = curationBookmarkRepository.findCurationInfoDtosByMember(condition);
+        List<SimpleStoreInfoDto> stores = storeBookmarkRepository.findSimpleStoreInfoDtosByMember(condition);
 
         return ProfileInfoRespDto.of(member, curations, stores);
     }
 
     @Transactional
-    public void savePreferences(String email, PreferenceRequest request) {
+    public void savePreferences(String email, PreferenceReqDto request) {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
 

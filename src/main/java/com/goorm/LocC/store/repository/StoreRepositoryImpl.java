@@ -4,7 +4,8 @@ import com.goorm.LocC.store.domain.City;
 import com.goorm.LocC.store.domain.Province;
 import com.goorm.LocC.store.domain.Store;
 import com.goorm.LocC.store.dto.BenefitStoreInfoDto;
-import com.goorm.LocC.store.dto.RegionCond;
+import com.goorm.LocC.store.dto.condition.NearStoreCond;
+import com.goorm.LocC.store.dto.condition.RegionCond;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -19,7 +20,7 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<BenefitStoreInfoDto> findBenefitStoresByProvinceAndCity(RegionCond condition) {
+    public List<BenefitStoreInfoDto> findBenefitStoreInfoDtosByProvinceAndCity(RegionCond condition) {
 
         return queryFactory
                 .select(

@@ -3,7 +3,7 @@ package com.goorm.LocC.home.controller;
 import com.goorm.LocC.auth.dto.CustomUserDetails;
 import com.goorm.LocC.global.common.dto.ApiResponse;
 import com.goorm.LocC.home.application.HomeService;
-import com.goorm.LocC.home.dto.HomeInfoResp;
+import com.goorm.LocC.home.dto.response.HomeInfoResp;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

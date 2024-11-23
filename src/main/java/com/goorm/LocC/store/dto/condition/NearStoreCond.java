@@ -1,4 +1,4 @@
-package com.goorm.LocC.store.repository;
+package com.goorm.LocC.store.dto.condition;
 
 import com.goorm.LocC.store.domain.Province;
 import com.goorm.LocC.store.domain.Store;

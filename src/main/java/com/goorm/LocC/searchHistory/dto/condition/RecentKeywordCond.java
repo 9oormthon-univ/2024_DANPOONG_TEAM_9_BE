@@ -1,4 +1,4 @@
-package com.goorm.LocC.searchHistory.dto;
+package com.goorm.LocC.searchHistory.dto.condition;
 
 import com.goorm.LocC.member.domain.Member;
 import lombok.AccessLevel;

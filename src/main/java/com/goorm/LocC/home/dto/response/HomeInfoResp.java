@@ -1,7 +1,8 @@
-package com.goorm.LocC.home.dto;
+package com.goorm.LocC.home.dto.response;
 
 import com.goorm.LocC.advertisement.dto.AdvertisementInfoDto;
 import com.goorm.LocC.curation.dto.CurationInfoDto;
+import com.goorm.LocC.home.dto.ProvinceInfoDto;
 import com.goorm.LocC.review.dto.ReviewInfoDto;
 import com.goorm.LocC.store.dto.BenefitStoreInfoDto;
 import lombok.AccessLevel;

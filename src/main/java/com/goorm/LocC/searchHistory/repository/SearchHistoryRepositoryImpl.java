@@ -1,8 +1,8 @@
 package com.goorm.LocC.searchHistory.repository;
 
 
-import com.goorm.LocC.searchHistory.dto.RecentKeywordCond;
-import com.goorm.LocC.searchHistory.dto.SearchKeywordRespDto.RecentKeywordInfoDto;
+import com.goorm.LocC.searchHistory.dto.condition.RecentKeywordCond;
+import com.goorm.LocC.searchHistory.dto.response.SearchKeywordRespDto.RecentKeywordInfoDto;
 import com.goorm.LocC.store.domain.Category;
 import com.goorm.LocC.store.domain.Province;
 import com.querydsl.core.types.Projections;
@@ -36,7 +36,7 @@ public class SearchHistoryRepositoryImpl implements SearchHistoryRepositoryCusto
                 .groupBy(searchHistory.keyword)
                 .orderBy(
                         Expressions.numberTemplate(Double.class,
-                                "SUM(1 / (DATEDIFF({0}, {1}) + 4))", // 검색 날짜 기준으로 가중치 1/(날짜차이+4)
+                                "SUM(1 / (TIMESTAMPDIFF(HOUR, {0}, {1}) + 4))", // 검색 시간 기준으로 가중치 1/(시간차이+4)
                                 Expressions.constant(now), searchHistory.createdAt
                         ).desc()
                 )
@@ -45,7 +45,7 @@ public class SearchHistoryRepositoryImpl implements SearchHistoryRepositoryCusto
     }
 
     @Override
-    public List<RecentKeywordInfoDto> findRecentKeywordsByMember(RecentKeywordCond condition) {
+    public List<RecentKeywordInfoDto> findRecentKeywordInfoDtoByMember(RecentKeywordCond condition) {
         return queryFactory.select(Projections.constructor(
                     RecentKeywordInfoDto.class,
                     searchHistory.searchHistoryId,
@@ -59,7 +59,7 @@ public class SearchHistoryRepositoryImpl implements SearchHistoryRepositoryCusto
                 .fetch();
     }
 
-    public List<String> getRecommendedKeyword(RecommendedKeywordCond condition) {
+    public List<String> getRecommendedKeywords(RecommendedKeywordCond condition) {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime startDate = now.minusDays(14); // 최근 14일 이내의 기록만
 
@@ -76,7 +76,7 @@ public class SearchHistoryRepositoryImpl implements SearchHistoryRepositoryCusto
                 .groupBy(searchHistory.keyword)
                 .orderBy(
                         Expressions.numberTemplate(Double.class,
-                                "SUM(1 / (DATEDIFF({0}, {1}) + 4))", // 검색 날짜 기준으로 가중치 1/(날짜차이+4)
+                                "SUM(1 / (TIMESTAMPDIFF(HOUR, {0}, {1}) + 4))", // 검색 시간 기준으로 가중치 1/(시간차이+4)
                                 Expressions.constant(now), searchHistory.createdAt
                         ).desc()
                 )

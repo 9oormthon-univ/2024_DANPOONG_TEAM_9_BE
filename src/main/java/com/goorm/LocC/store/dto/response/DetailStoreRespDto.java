@@ -1,10 +1,11 @@
-package com.goorm.LocC.store.dto;
+package com.goorm.LocC.store.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.goorm.LocC.store.domain.BusinessHour;
 import com.goorm.LocC.store.domain.BusinessStatus;
 import com.goorm.LocC.store.domain.Category;
 import com.goorm.LocC.store.domain.Store;
+import com.goorm.LocC.store.dto.NearStoreInfoDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -19,7 +20,7 @@ import java.util.Optional;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class DetailStoreResp {
+public class DetailStoreRespDto {
 
     @Schema(description = "가게 이름", example = "로슈아커피")
     private String storeName;
@@ -106,7 +107,7 @@ public class DetailStoreResp {
     }
 
     @Builder
-    public DetailStoreResp(String storeName, boolean isBookmarked, String address, Category category, String phone, String imageUrl, LocalTime openTime, LocalTime closeTime, BusinessStatus status, String homepage, float rating, int reviewCount, String content, List<BusinessHourInfo> businessHours, List<SimpleReviewInfo> reviews, List<NearStoreInfoDto> nearbyStores) {
+    public DetailStoreRespDto(String storeName, boolean isBookmarked, String address, Category category, String phone, String imageUrl, LocalTime openTime, LocalTime closeTime, BusinessStatus status, String homepage, float rating, int reviewCount, String content, List<BusinessHourInfo> businessHours, List<SimpleReviewInfo> reviews, List<NearStoreInfoDto> nearbyStores) {
         this.storeName = storeName;
         this.isBookmarked = isBookmarked;
         this.category = category;
@@ -125,7 +126,7 @@ public class DetailStoreResp {
         this.nearbyStores = nearbyStores;
     }
 
-    public static DetailStoreResp of(Store store, boolean isBookmarked, List<BusinessHourInfo> businessHours, List<SimpleReviewInfo> reviews, List<NearStoreInfoDto> nearbyStores) {
+    public static DetailStoreRespDto of(Store store, boolean isBookmarked, List<BusinessHourInfo> businessHours, List<SimpleReviewInfo> reviews, List<NearStoreInfoDto> nearbyStores) {
         DayOfWeek dayOfWeek = LocalDate.now().getDayOfWeek();
 
         Optional<BusinessHourInfo> today = businessHours.stream().filter(
@@ -139,7 +140,7 @@ public class DetailStoreResp {
         LocalTime closeTime = today.map(BusinessHourInfo::getCloseTime)
                 .orElse(null);
 
-        return DetailStoreResp.builder()
+        return DetailStoreRespDto.builder()
                 .storeName(store.getName())
                 .imageUrl(store.getThumbnailImageUrl())
                 .isBookmarked(isBookmarked)
