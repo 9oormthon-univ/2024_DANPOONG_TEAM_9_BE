@@ -39,7 +39,7 @@ public class ReviewController {
         );
     }
 
-    // 추가된 개별 리뷰 상세 조회 API
+    // 개별 리뷰 상세 조회 API
     @Operation(summary = "개별 리뷰 상세 조회", description = "storeId로 리뷰 상세 정보를 조회합니다.")
     @GetMapping
     public ResponseEntity<ApiResponse<ReviewDetailResponseDto>> getReviewDetail(

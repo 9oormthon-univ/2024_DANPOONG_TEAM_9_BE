@@ -69,9 +69,6 @@ public class ReviewService {
                 review.getImageUrl(),
                 false, // 좋아요 여부 - 구현 필요
                 review.getLikeCount(),
-                false, // 북마크 여부 - 구현 필요
-                0, // 찜 개수 (데이터 없음)
-                0, // 공유 개수 (데이터 없음)
                 review.getVisitedDate(),
                 review.getStore().getKakaomapUrl()
         );

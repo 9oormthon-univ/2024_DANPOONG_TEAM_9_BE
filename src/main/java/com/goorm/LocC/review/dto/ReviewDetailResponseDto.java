@@ -29,14 +29,14 @@ public class ReviewDetailResponseDto {
     @Schema(description = "좋아요 개수", example = "10")
     private int likeCount;
 
-    @Schema(description = "북마크 여부", example = "true")
-    private boolean isBookmarked;
+//    @Schema(description = "북마크 여부", example = "true")
+//    private boolean isBookmarked;
 
-    @Schema(description = "찜 개수", example = "5")
-    private int dibsCount;
+//    @Schema(description = "찜 개수", example = "5")
+//    private int dibsCount;
 
-    @Schema(description = "공유 개수", example = "2")
-    private int shareCount;
+//    @Schema(description = "공유 개수", example = "2")
+//    private int shareCount;
 
     @Schema(description = "방문 날짜", example = "2023-10-10")
     private LocalDate visitDate;
@@ -44,17 +44,13 @@ public class ReviewDetailResponseDto {
     @Schema(description = "카카오지도 URL", example = "https://kakaomap.url")
     private String kakaomapUrl;
 
-    public ReviewDetailResponseDto(Long reviewId, String storeName, String content, String image, boolean isLiked, int likeCount,
-                                   boolean isBookmarked, int dibsCount, int shareCount, LocalDate visitDate, String kakaomapUrl) {
+    public ReviewDetailResponseDto(Long reviewId, String storeName, String content, String image, boolean isLiked, int likeCount, LocalDate visitDate, String kakaomapUrl) {
         this.reviewId = reviewId;
         this.storeName = storeName;
         this.content = content;
         this.image = image;
         this.isLiked = isLiked;
         this.likeCount = likeCount;
-        this.isBookmarked = isBookmarked;
-        this.dibsCount = dibsCount;
-        this.shareCount = shareCount;
         this.visitDate = visitDate;
         this.kakaomapUrl = kakaomapUrl;
     }
