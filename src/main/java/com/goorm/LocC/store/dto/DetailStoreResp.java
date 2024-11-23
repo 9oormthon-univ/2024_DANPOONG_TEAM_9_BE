@@ -84,6 +84,8 @@ public class DetailStoreResp {
     public static class SimpleReviewInfo {
         @Schema(description = "리뷰 ID", example = "1")
         private Long reviewId;
+        @Schema(description = "유저 프로필 이미지", example = "https://image1.jpg")
+        private String profileImageUrl;
         @Schema(description = "유저 닉네임", example = "미르미")
         private String username;
         @Schema(description = "평점", example = "4")
@@ -93,8 +95,9 @@ public class DetailStoreResp {
         @Schema(description = "리뷰 이미지", example = "[\"https://image1.jpg\", \"https://image2.jpg\"]")
         private List<String> images;
 
-        public SimpleReviewInfo(Long reviewId, String username, int rating, String summary, List<String> images) {
+        public SimpleReviewInfo(Long reviewId, String profileImageUrl, String username, int rating, String summary, List<String> images) {
             this.reviewId = reviewId;
+            this.profileImageUrl = profileImageUrl;
             this.username = username;
             this.rating = rating;
             this.summary = summary;

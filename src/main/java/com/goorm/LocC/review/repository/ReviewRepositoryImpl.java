@@ -90,6 +90,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
 
                 return new SimpleReviewInfo(
                         r.getReviewId(),
+                        r.getMember().getProfileImageUrl(),
                         r.getMember().getUsername(),
                         r.getRating(),
                         r.getContent().length() > 50 ? r.getContent().substring(0, 50) : r.getContent(), // 요약
