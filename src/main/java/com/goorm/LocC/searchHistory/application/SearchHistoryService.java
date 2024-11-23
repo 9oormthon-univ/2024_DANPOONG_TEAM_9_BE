@@ -5,8 +5,8 @@ import com.goorm.LocC.member.domain.PreferredCategory;
 import com.goorm.LocC.member.exception.MemberException;
 import com.goorm.LocC.member.repository.MemberRepository;
 import com.goorm.LocC.searchHistory.domain.SearchHistory;
-import com.goorm.LocC.searchHistory.dto.SearchKeywordRespDto;
-import com.goorm.LocC.searchHistory.dto.SearchKeywordRespDto.RecentKeywordInfoDto;
+import com.goorm.LocC.searchHistory.dto.response.SearchKeywordRespDto;
+import com.goorm.LocC.searchHistory.dto.response.SearchKeywordRespDto.RecentKeywordInfoDto;
 import com.goorm.LocC.searchHistory.exception.SearchHistoryException;
 import com.goorm.LocC.searchHistory.repository.RecommendedKeywordCond;
 import com.goorm.LocC.searchHistory.repository.SearchHistoryRepository;
@@ -51,7 +51,7 @@ public class SearchHistoryService {
                 .map(PreferredCategory::getCategory)
                 .toList();
 
-        List<String> recommendedKeywords = searchHistoryRepository.getRecommendedKeyword(
+        List<String> recommendedKeywords = searchHistoryRepository.getRecommendedKeywords(
                 new RecommendedKeywordCond(member.getPreferredProvince(), preferredCategories, 7)
         );
 

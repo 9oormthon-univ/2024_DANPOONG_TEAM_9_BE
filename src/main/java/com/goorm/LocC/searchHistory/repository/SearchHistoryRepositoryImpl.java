@@ -1,8 +1,8 @@
 package com.goorm.LocC.searchHistory.repository;
 
 
-import com.goorm.LocC.searchHistory.dto.RecentKeywordCond;
-import com.goorm.LocC.searchHistory.dto.SearchKeywordRespDto.RecentKeywordInfoDto;
+import com.goorm.LocC.searchHistory.dto.condition.RecentKeywordCond;
+import com.goorm.LocC.searchHistory.dto.response.SearchKeywordRespDto.RecentKeywordInfoDto;
 import com.goorm.LocC.store.domain.Category;
 import com.goorm.LocC.store.domain.Province;
 import com.querydsl.core.types.Projections;
@@ -45,7 +45,7 @@ public class SearchHistoryRepositoryImpl implements SearchHistoryRepositoryCusto
     }
 
     @Override
-    public List<RecentKeywordInfoDto> findRecentKeywordsByMember(RecentKeywordCond condition) {
+    public List<RecentKeywordInfoDto> findRecentKeywordInfoDtoByMember(RecentKeywordCond condition) {
         return queryFactory.select(Projections.constructor(
                     RecentKeywordInfoDto.class,
                     searchHistory.searchHistoryId,
@@ -59,7 +59,7 @@ public class SearchHistoryRepositoryImpl implements SearchHistoryRepositoryCusto
                 .fetch();
     }
 
-    public List<String> getRecommendedKeyword(RecommendedKeywordCond condition) {
+    public List<String> getRecommendedKeywords(RecommendedKeywordCond condition) {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime startDate = now.minusDays(14); // 최근 14일 이내의 기록만
 

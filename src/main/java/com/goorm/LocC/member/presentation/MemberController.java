@@ -3,8 +3,8 @@ package com.goorm.LocC.member.presentation;
 import com.goorm.LocC.auth.dto.CustomUserDetails;
 import com.goorm.LocC.global.common.dto.ApiResponse;
 import com.goorm.LocC.member.application.MemberService;
-import com.goorm.LocC.member.dto.PreferenceRequest;
-import com.goorm.LocC.member.dto.ProfileInfoRespDto;
+import com.goorm.LocC.member.dto.request.PreferenceReqDto;
+import com.goorm.LocC.member.dto.response.ProfileInfoRespDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,7 @@ public class MemberController {
     @PostMapping("/me/preferences")
     public ResponseEntity<ApiResponse<String>> savePreferences(
             @AuthenticationPrincipal CustomUserDetails user,
-            @RequestBody PreferenceRequest request) {
+            @RequestBody PreferenceReqDto request) {
         memberService.savePreferences(user.getEmail(), request);
         return ResponseEntity.ok(ApiResponse.success("Preferences saved successfully"));
     }

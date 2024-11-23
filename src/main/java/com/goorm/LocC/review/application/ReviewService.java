@@ -5,11 +5,11 @@ import com.goorm.LocC.member.exception.MemberException;
 import com.goorm.LocC.member.repository.MemberRepository;
 import com.goorm.LocC.review.domain.Review;
 import com.goorm.LocC.review.domain.ReviewLike;
-import com.goorm.LocC.review.dto.ReviewDetailResponseDto;
+import com.goorm.LocC.review.dto.response.DetailReviewRespDto;
 import com.goorm.LocC.review.exception.ReviewException;
 import com.goorm.LocC.review.repository.ReviewLikeRepository;
 import com.goorm.LocC.review.repository.ReviewRepository;
-import com.goorm.LocC.store.dto.ToggleStoreBookmarkRespDto;
+import com.goorm.LocC.store.dto.response.ToggleStoreBookmarkRespDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,11 +28,9 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final ReviewLikeRepository reviewLikeRepository;
 
-    public ToggleStoreBookmarkRespDto toggleLike(Long storeId, String email) {
-        Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
-        Review review = reviewRepository.findById(storeId)
-                .orElseThrow(() -> new ReviewException(REVIEW_NOT_FOUND));
+    public ToggleStoreBookmarkRespDto toggleLike(Long reviewId, String email) {
+        Member member = findMemberByEmail(email);
+        Review review = findReviewById(reviewRepository.findById(reviewId));
         Optional<ReviewLike> optionalBookmark = reviewLikeRepository.findReviewLikeByMemberAndReview(member, review);
 
         if (optionalBookmark.isPresent()) { // 이미 좋아요한 경우
@@ -57,20 +55,33 @@ public class ReviewService {
     }
 
     // 추가된 개별 리뷰 상세 조회 메서드
-    public ReviewDetailResponseDto getReviewDetail(Long reviewId) {
-        Review review = reviewRepository.findReviewDetailById(reviewId)
-                .orElseThrow(() -> new ReviewException(REVIEW_NOT_FOUND));
+    @Transactional(readOnly = true)
+    public DetailReviewRespDto getReviewDetail(Long reviewId, String email) {
+        Review review = findReviewById(reviewRepository.findReviewDetailById(reviewId));
+
+        Member member = findMemberByEmail(email);
+        boolean isLiked = reviewLikeRepository.existsByMemberAndReview(member, review);
 
         // DTO로 변환하여 반환
-        return new ReviewDetailResponseDto(
+        return new DetailReviewRespDto(
                 review.getReviewId(),
                 review.getStore().getName(),
                 review.getContent(),
                 review.getImageUrl(),
-                false, // 좋아요 여부 - 구현 필요
+                isLiked,
                 review.getLikeCount(),
                 review.getVisitedDate(),
                 review.getStore().getKakaomapUrl()
         );
+    }
+
+    private Review findReviewById(Optional<Review> reviewRepository) {
+        return reviewRepository
+                .orElseThrow(() -> new ReviewException(REVIEW_NOT_FOUND));
+    }
+
+    private Member findMemberByEmail(String email) {
+        return memberRepository.findByEmail(email)
+                .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
     }
 }

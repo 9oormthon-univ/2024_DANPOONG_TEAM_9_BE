@@ -1,4 +1,4 @@
-package com.goorm.LocC.member.dto;
+package com.goorm.LocC.member.dto.request;
 
 import com.goorm.LocC.store.domain.Category;
 import com.goorm.LocC.store.domain.Province;
@@ -9,7 +9,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class PreferenceRequest {
+public class PreferenceReqDto {
     private List<Category> categories; // 관심 카테고리
     private Province province; // 선호 지역
 }

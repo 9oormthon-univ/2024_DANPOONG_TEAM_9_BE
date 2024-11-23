@@ -1,4 +1,4 @@
-package com.goorm.LocC.searchHistory.dto;
+package com.goorm.LocC.searchHistory.dto.response;
 
 import com.goorm.LocC.searchHistory.domain.SearchHistory;
 import io.swagger.v3.oas.annotations.media.Schema;

@@ -2,7 +2,7 @@ package com.goorm.LocC.curation.repository;
 
 import com.goorm.LocC.curation.dto.CurationInfoDto;
 import com.goorm.LocC.member.domain.Member;
-import com.goorm.LocC.member.dto.MemberCond;
+import com.goorm.LocC.member.dto.condition.MemberCond;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -18,9 +18,8 @@ public class CurationBookmarkRepositoryImpl implements CurationBookmarkRepositor
 
     private final JPAQueryFactory queryFactory;
 
-
     @Override
-    public List<CurationInfoDto> findCurationsByMember(MemberCond condition) {
+    public List<CurationInfoDto> findCurationInfoDtosByMember(MemberCond condition) {
         return queryFactory
                 .select(
                         Projections.constructor(CurationInfoDto.class,
@@ -35,7 +34,6 @@ public class CurationBookmarkRepositoryImpl implements CurationBookmarkRepositor
                 .on(bookmarkMemberEq(condition.getMember()))
                 .orderBy(curationBookmark.createdAt.desc())
                 .fetch();
-
     }
 
     private BooleanExpression bookmarkMemberEq(Member member) {

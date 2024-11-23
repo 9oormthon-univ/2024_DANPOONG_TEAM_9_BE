@@ -1,6 +1,7 @@
-package com.goorm.LocC.curation.dto;
+package com.goorm.LocC.curation.dto.response;
 
-import com.goorm.LocC.store.dto.StoreDetailDto;
+import com.goorm.LocC.curation.dto.CurationInfoDto;
+import com.goorm.LocC.curation.dto.CurationStoreInfoDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -11,20 +12,19 @@ import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class CurationDetailDto {
+public class DetailCurationRespDto {
 
     @Schema(description = "큐레이션 기본 정보")
     private CurationInfoDto curationInfo;
 
     @Schema(description = "큐레이션에 포함된 스토어 리스트")
-    private List<StoreDetailDto> stores;
+    private List<CurationStoreInfoDto> stores;
 
     @Schema(description = "해당 유저의 큐레이션 북마크 여부")
     private boolean isBookmarked;
 
     @Builder
-
-    public CurationDetailDto(CurationInfoDto curationInfo, List<StoreDetailDto> stores, boolean isBookmarked) {
+    public DetailCurationRespDto(CurationInfoDto curationInfo, List<CurationStoreInfoDto> stores, boolean isBookmarked) {
         this.curationInfo = curationInfo;
         this.stores = stores;
         this.isBookmarked = isBookmarked;

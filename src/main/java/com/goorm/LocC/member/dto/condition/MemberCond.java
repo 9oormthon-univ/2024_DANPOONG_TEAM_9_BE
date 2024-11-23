@@ -1,4 +1,4 @@
-package com.goorm.LocC.member.dto;
+package com.goorm.LocC.member.dto.condition;
 
 import com.goorm.LocC.member.domain.Member;
 import lombok.AccessLevel;

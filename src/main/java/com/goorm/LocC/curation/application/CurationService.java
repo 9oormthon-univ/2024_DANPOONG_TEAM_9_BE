@@ -2,10 +2,10 @@ package com.goorm.LocC.curation.application;
 
 import com.goorm.LocC.curation.domain.Curation;
 import com.goorm.LocC.curation.domain.CurationBookmark;
-import com.goorm.LocC.curation.dto.CurationDetailDto;
+import com.goorm.LocC.curation.dto.response.DetailCurationRespDto;
 import com.goorm.LocC.curation.dto.CurationInfoDto;
-import com.goorm.LocC.store.dto.CurationStoreInfoDto;
-import com.goorm.LocC.curation.dto.ToggleCurationBookmarkRespDto;
+import com.goorm.LocC.curation.dto.CurationStoreBasicInfoDto;
+import com.goorm.LocC.curation.dto.response.ToggleCurationBookmarkRespDto;
 import com.goorm.LocC.curation.exception.CurationException;
 import com.goorm.LocC.curation.repository.CurationBookmarkRepository;
 import com.goorm.LocC.curation.repository.CurationRepository;
@@ -14,7 +14,7 @@ import com.goorm.LocC.member.exception.MemberException;
 import com.goorm.LocC.member.repository.MemberRepository;
 import com.goorm.LocC.store.domain.BusinessHour;
 import com.goorm.LocC.store.domain.Store;
-import com.goorm.LocC.store.dto.StoreDetailDto;
+import com.goorm.LocC.curation.dto.CurationStoreInfoDto;
 import com.goorm.LocC.store.repository.BusinessHourRepository;
 import com.goorm.LocC.store.repository.StoreBookmarkRepository;
 import com.goorm.LocC.store.repository.StoreRepository;
@@ -71,7 +71,7 @@ public class CurationService {
 
     // 큐레이션 상세 조회 기능
     @Transactional
-    public CurationDetailDto getCurationDetail(Long curationId, String email) {
+    public DetailCurationRespDto getCurationDetail(Long curationId, String email) {
         // 큐레이션 기본 정보 조회
         Curation curation = curationRepository.findById(curationId)
                 .orElseThrow(() -> new CurationException(CURATION_NOT_FOUND));
@@ -99,10 +99,10 @@ public class CurationService {
             storeBookmarkRepository.findStoreBookmarkByMemberAndStore(member, store);
         });
 
-        List<StoreDetailDto> storeDetails = storeBusinessHourMap.entrySet().stream()
+        List<CurationStoreInfoDto> storeDetails = storeBusinessHourMap.entrySet().stream()
                 .map(
-                    entry -> StoreDetailDto.builder()
-                            .storeInfo(CurationStoreInfoDto.of(entry.getKey(), entry.getValue()))
+                    entry -> CurationStoreInfoDto.builder()
+                            .storeInfo(CurationStoreBasicInfoDto.of(entry.getKey(), entry.getValue()))
                             .isBookmarked(storeBookmarkRepository.existsByMemberAndStore(member, entry.getKey()))
                             .summary(entry.getKey().getCurationCoutent())
                             .build()
@@ -110,7 +110,7 @@ public class CurationService {
                 .toList();
 
         // 응답 DTO 생성
-        return CurationDetailDto.builder()
+        return DetailCurationRespDto.builder()
                 .isBookmarked(isCurationBookmarked)
                 .curationInfo(curationInfoDto)
                 .stores(storeDetails)

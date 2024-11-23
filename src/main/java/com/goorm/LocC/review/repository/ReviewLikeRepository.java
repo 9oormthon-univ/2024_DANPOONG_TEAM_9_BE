@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface ReviewLikeRepository extends JpaRepository<ReviewLike, Long> {
 
     Optional<ReviewLike> findReviewLikeByMemberAndReview(Member member, Review review);
+    boolean existsByMemberAndReview(Member member, Review review);
 }

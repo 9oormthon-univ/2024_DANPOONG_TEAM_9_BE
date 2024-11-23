@@ -1,8 +1,8 @@
 package com.goorm.LocC.store.repository;
 
 import com.goorm.LocC.member.domain.Member;
-import com.goorm.LocC.member.dto.MemberCond;
-import com.goorm.LocC.store.dto.StoreInfoDto;
+import com.goorm.LocC.member.dto.condition.MemberCond;
+import com.goorm.LocC.store.dto.SimpleStoreInfoDto;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -23,12 +23,12 @@ public class StoreBookmarkRepositoryImpl implements StoreBookmarkRepositoryCusto
 
 
     @Override
-    public List<StoreInfoDto> searchStoresByMember(MemberCond condition) {
+    public List<SimpleStoreInfoDto> findSimpleStoreInfoDtosByMember(MemberCond condition) {
         DayOfWeek today = LocalDate.now().getDayOfWeek();
 
         return queryFactory
                 .select(
-                        Projections.constructor(StoreInfoDto.class,
+                        Projections.constructor(SimpleStoreInfoDto.class,
                                 store.storeId,
                                 store.name,
                                 store.category,

@@ -6,10 +6,9 @@ import com.goorm.LocC.store.application.StoreService;
 import com.goorm.LocC.store.domain.Category;
 import com.goorm.LocC.store.domain.City;
 import com.goorm.LocC.store.domain.Province;
-import com.goorm.LocC.store.dto.DetailStoreResp;
+import com.goorm.LocC.store.dto.response.DetailStoreRespDto;
 import com.goorm.LocC.store.dto.StoreInfoDto;
-import com.goorm.LocC.store.dto.StoreInfoExDto;
-import com.goorm.LocC.store.dto.ToggleStoreBookmarkRespDto;
+import com.goorm.LocC.store.dto.response.ToggleStoreBookmarkRespDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -43,7 +42,7 @@ public class StoreController {
 
     @Operation(summary = "가게 리스트 조회", description = "카테고리, 지역, 검색어 등으로 가게 리스트를 조회합니다.")
     @GetMapping
-    public ResponseEntity<ApiResponse<List<StoreInfoExDto>>> getStores(
+    public ResponseEntity<ApiResponse<List<StoreInfoDto>>> getStores(
             @Parameter(description = "카테고리") @RequestParam(required = false) List<Category> category,
             @Parameter(description = "도/광역시") @RequestParam(required = false) Province province,
             @Parameter(description = "시/군/구") @RequestParam(required = false) City city,
@@ -51,13 +50,13 @@ public class StoreController {
             @Parameter(description = "정렬 기준", example = "name") @RequestParam(defaultValue = "name") String sortBy,
             @AuthenticationPrincipal CustomUserDetails user
     ) {
-        List<StoreInfoExDto> stores = storeService.findStores(category, province, city, storeName, sortBy, user.getEmail());
+        List<StoreInfoDto> stores = storeService.findStores(category, province, city, storeName, sortBy, user.getEmail());
         return ResponseEntity.ok(ApiResponse.success(stores));
     }
 
     @Operation(summary = "가게 상세 조회", description = "가게 ID로 가게 상세 정보를 조회합니다.")
     @GetMapping("/{storeId}")
-    public ResponseEntity<ApiResponse<DetailStoreResp>> getStoreById(
+    public ResponseEntity<ApiResponse<DetailStoreRespDto>> getStoreById(
             @Parameter(description = "가게 ID", example = "1")
             @PathVariable Long storeId,
             @AuthenticationPrincipal CustomUserDetails user

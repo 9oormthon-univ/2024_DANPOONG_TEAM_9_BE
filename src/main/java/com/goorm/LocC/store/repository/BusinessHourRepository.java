@@ -8,7 +8,7 @@ import java.time.DayOfWeek;
 import java.util.List;
 
 public interface BusinessHourRepository extends JpaRepository<BusinessHour, Long> {
-    List<BusinessHour> findBusinessHourByStoreInAndDayOfWeek(List<Store> stores, DayOfWeek now);
 
+    List<BusinessHour> findBusinessHourByStoreInAndDayOfWeek(List<Store> stores, DayOfWeek now);
     List<BusinessHour> findBusinessHourByStoreOrderByDayOfWeek(Store store);
 }

@@ -6,8 +6,8 @@ import com.goorm.LocC.review.dto.ReviewInfoDto;
 import com.goorm.LocC.store.domain.City;
 import com.goorm.LocC.store.domain.Province;
 import com.goorm.LocC.store.domain.Store;
-import com.goorm.LocC.store.dto.DetailStoreResp.SimpleReviewInfo;
-import com.goorm.LocC.store.dto.RegionCond;
+import com.goorm.LocC.store.dto.response.DetailStoreRespDto.SimpleReviewInfo;
+import com.goorm.LocC.store.dto.condition.RegionCond;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -28,7 +28,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<ReviewInfoDto> findReviewsByProvinceAndCity(RegionCond condition) {
+    public List<ReviewInfoDto> findReviewInfoDtosByProvinceAndCity(RegionCond condition) {
 
         return queryFactory
                 .select(
@@ -73,7 +73,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
     }
 
     @Override
-    public List<SimpleReviewInfo> findSimpleReviewsByStore(Store store) {
+    public List<SimpleReviewInfo> findSimpleReviewDtosByStore(Store store) {
         List<Review> reviews = queryFactory
                 .selectFrom(review)
                 .leftJoin(review.reviewImage, reviewImage).fetchJoin()

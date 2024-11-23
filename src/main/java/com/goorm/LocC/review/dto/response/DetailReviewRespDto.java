@@ -1,7 +1,9 @@
-package com.goorm.LocC.review.dto;
+package com.goorm.LocC.review.dto.response;
 
+import com.goorm.LocC.review.domain.Review;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,7 +11,7 @@ import java.time.LocalDate;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class ReviewDetailResponseDto {
+public class DetailReviewRespDto {
 
     @Schema(description = "리뷰 ID", example = "1")
     private Long reviewId;
@@ -35,7 +37,8 @@ public class ReviewDetailResponseDto {
     @Schema(description = "카카오지도 URL", example = "https://kakaomap.url")
     private String kakaomapUrl;
 
-    public ReviewDetailResponseDto(Long reviewId, String storeName, String content, String image, boolean isLiked, int likeCount, LocalDate visitDate, String kakaomapUrl) {
+    @Builder
+    public DetailReviewRespDto(Long reviewId, String storeName, String content, String image, boolean isLiked, int likeCount, LocalDate visitDate, String kakaomapUrl) {
         this.reviewId = reviewId;
         this.storeName = storeName;
         this.content = content;
@@ -44,5 +47,18 @@ public class ReviewDetailResponseDto {
         this.likeCount = likeCount;
         this.visitDate = visitDate;
         this.kakaomapUrl = kakaomapUrl;
+    }
+
+    public static DetailReviewRespDto of(Review review, boolean isLiked) {
+        return DetailReviewRespDto.builder()
+                .reviewId(review.getReviewId())
+                .storeName(review.getStore().getName())
+                .content(review.getContent())
+                .image(review.getImageUrl())
+                .isLiked(isLiked)
+                .likeCount(review.getLikeCount())
+                .visitDate(review.getVisitedDate())
+                .kakaomapUrl(review.getStore().getKakaomapUrl())
+                .build();
     }
 }

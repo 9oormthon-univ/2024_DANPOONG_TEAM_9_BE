@@ -7,14 +7,14 @@ import com.goorm.LocC.review.repository.ReviewRepository;
 import com.goorm.LocC.searchHistory.domain.SearchHistory;
 import com.goorm.LocC.searchHistory.repository.SearchHistoryRepository;
 import com.goorm.LocC.store.domain.*;
-import com.goorm.LocC.store.dto.DetailStoreResp;
-import com.goorm.LocC.store.dto.DetailStoreResp.SimpleReviewInfo;
+import com.goorm.LocC.store.dto.response.DetailStoreRespDto;
+import com.goorm.LocC.store.dto.response.DetailStoreRespDto.SimpleReviewInfo;
 import com.goorm.LocC.store.dto.NearStoreInfoDto;
-import com.goorm.LocC.store.dto.StoreInfoExDto;
-import com.goorm.LocC.store.dto.ToggleStoreBookmarkRespDto;
+import com.goorm.LocC.store.dto.StoreInfoDto;
+import com.goorm.LocC.store.dto.response.ToggleStoreBookmarkRespDto;
 import com.goorm.LocC.store.exception.StoreException;
 import com.goorm.LocC.store.repository.BusinessHourRepository;
-import com.goorm.LocC.store.repository.NearStoreCond;
+import com.goorm.LocC.store.dto.condition.NearStoreCond;
 import com.goorm.LocC.store.repository.StoreBookmarkRepository;
 import com.goorm.LocC.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
@@ -80,7 +80,7 @@ public class StoreService {
                 .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
     }
 
-    public List<StoreInfoExDto> findStores(List<Category> category, Province province, City city, String storeName, String sortBy, String email) {
+    public List<StoreInfoDto> findStores(List<Category> category, Province province, City city, String storeName, String sortBy, String email) {
         if (category != null && category.size() > 2) {
             throw new IllegalArgumentException("최대 2개의 카테고리만 선택할 수 있습니다.");
         }
@@ -117,7 +117,7 @@ public class StoreService {
                         businessStatus = BusinessStatus.checkBusinessStatus(isHoliday, openTime, closeTime);
                     }
 
-                    return new StoreInfoExDto(
+                    return new StoreInfoDto(
                             store.getStoreId(),
                             store.getName(),
                             store.getCategory(),
@@ -136,7 +136,7 @@ public class StoreService {
                 .collect(Collectors.toList());
     }
 
-    public DetailStoreResp findById(Long storeId, String email) {
+    public DetailStoreRespDto findById(Long storeId, String email) {
         Member member = findMemberByEmail(email);
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(() -> new StoreException(STORE_NOT_FOUND));
@@ -145,13 +145,13 @@ public class StoreService {
         boolean isStoreBookmarked = storeBookmarkRepository.existsByMemberAndStore(member, store);
 
         // 가게 주간 영업 시간 정보 조회(월~일)
-        List<DetailStoreResp.BusinessHourInfo> businessHours = businessHourRepository.findBusinessHourByStoreOrderByDayOfWeek(store)
+        List<DetailStoreRespDto.BusinessHourInfo> businessHours = businessHourRepository.findBusinessHourByStoreOrderByDayOfWeek(store)
                 .stream()
                 .sorted(Comparator.comparingInt(b -> b.getDayOfWeek().getValue())) // 월 -> 일 순으로 정렬
-                .map(DetailStoreResp.BusinessHourInfo::from)
+                .map(DetailStoreRespDto.BusinessHourInfo::from)
                 .toList();
 
-        List<SimpleReviewInfo> reviews = reviewRepository.findSimpleReviewsByStore(store);
+        List<SimpleReviewInfo> reviews = reviewRepository.findSimpleReviewDtosByStore(store);
 
         // 주변 가게 조회
         NearStoreCond condition = NearStoreCond.builder()
@@ -178,6 +178,6 @@ public class StoreService {
                                 storeBookmarkRepository.existsByMemberAndStore(member, e.getKey())))
                 .toList();
 
-        return DetailStoreResp.of(store, isStoreBookmarked, businessHours, reviews, nearbyStores);
+        return DetailStoreRespDto.of(store, isStoreBookmarked, businessHours, reviews, nearbyStores);
     }
 }

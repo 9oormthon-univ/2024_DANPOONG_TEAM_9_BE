@@ -3,8 +3,8 @@ package com.goorm.LocC.review.presentation;
 import com.goorm.LocC.auth.dto.CustomUserDetails;
 import com.goorm.LocC.global.common.dto.ApiResponse;
 import com.goorm.LocC.review.application.ReviewService;
-import com.goorm.LocC.review.dto.ReviewDetailResponseDto;
-import com.goorm.LocC.store.dto.ToggleStoreBookmarkRespDto;
+import com.goorm.LocC.review.dto.response.DetailReviewRespDto;
+import com.goorm.LocC.store.dto.response.ToggleStoreBookmarkRespDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -40,13 +40,14 @@ public class ReviewController {
     }
 
     // 개별 리뷰 상세 조회 API
-    @Operation(summary = "개별 리뷰 상세 조회", description = "storeId로 리뷰 상세 정보를 조회합니다.")
+    @Operation(summary = "개별 리뷰 상세 조회", description = "reviewId로 리뷰 상세 정보를 조회합니다.")
     @GetMapping
-    public ResponseEntity<ApiResponse<ReviewDetailResponseDto>> getReviewDetail(
-            @Parameter(description = "스토어 ID", example = "1")
-            @RequestParam Long storeId
+    public ResponseEntity<ApiResponse<DetailReviewRespDto>> getReviewDetail(
+            @Parameter(description = "리뷰 ID", example = "1")
+            @RequestParam Long storeId,
+            @AuthenticationPrincipal CustomUserDetails user
     ) {
-        ReviewDetailResponseDto reviewDetail = reviewService.getReviewDetail(storeId);
+        DetailReviewRespDto reviewDetail = reviewService.getReviewDetail(storeId, user.getEmail());
         return ResponseEntity.ok(ApiResponse.success(reviewDetail));
     }
 }
