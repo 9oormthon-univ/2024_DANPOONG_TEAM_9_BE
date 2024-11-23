@@ -27,6 +27,8 @@ public class DetailStoreResp {
     private boolean isBookmarked;
     @Schema(description = "카테고리", example = "카페")
     private Category category;
+    @Schema(description = "가게 주소", example = "서울시 강남구 역삼동 123-45")
+    private String address;
     @Schema(description = "전화번호", example = "010-1234-5678")
     private String phone;
     @Schema(description = "가게 이미지", example = "https://image1.jpg")
@@ -98,12 +100,13 @@ public class DetailStoreResp {
     }
 
     @Builder
-    public DetailStoreResp(String storeName, boolean isBookmarked, Category category, String phone, String imageUrl, LocalTime openTime, LocalTime closeTime, BusinessStatus status, String homepage, float rating, int reviewCount, String content, List<BusinessHourInfo> businessHours, List<SimpleReviewInfo> reviews, List<NearStoreInfoDto> nearbyStores) {
+    public DetailStoreResp(String storeName, boolean isBookmarked, String address, Category category, String phone, String imageUrl, LocalTime openTime, LocalTime closeTime, BusinessStatus status, String homepage, float rating, int reviewCount, String content, List<BusinessHourInfo> businessHours, List<SimpleReviewInfo> reviews, List<NearStoreInfoDto> nearbyStores) {
         this.storeName = storeName;
         this.isBookmarked = isBookmarked;
         this.category = category;
         this.phone = phone;
         this.imageUrl = imageUrl;
+        this.address = address;
         this.openTime = openTime;
         this.closeTime = closeTime;
         this.status = status;
@@ -138,6 +141,7 @@ public class DetailStoreResp {
                 .phone(store.getPhone())
                 .openTime(openTime)
                 .closeTime(closeTime)
+                .address(store.getAddress())
                 .status(businessStatus)
                 .homepage(store.getHomepageUrl())
                 .rating(store.getRating())
