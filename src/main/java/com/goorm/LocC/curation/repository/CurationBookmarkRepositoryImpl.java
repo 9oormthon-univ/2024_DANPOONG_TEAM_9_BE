@@ -20,7 +20,7 @@ public class CurationBookmarkRepositoryImpl implements CurationBookmarkRepositor
 
 
     @Override
-    public List<CurationInfoDto> searchCurationsByMember(MemberCond condition) {
+    public List<CurationInfoDto> findCurationsByMember(MemberCond condition) {
         return queryFactory
                 .select(
                         Projections.constructor(CurationInfoDto.class,

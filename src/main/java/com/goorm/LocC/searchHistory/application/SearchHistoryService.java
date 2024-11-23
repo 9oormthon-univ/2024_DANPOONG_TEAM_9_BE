@@ -46,7 +46,7 @@ public class SearchHistoryService {
                 .map(RecentKeywordInfoDto::from)
                 .toList();
 
-        // TODO: 추천 키워드 로직 변경 필요
+        // TODO: 추천 검색어 키워드 로직 변경 필요
         String preferredProvince = member.getPreferredProvince().getName();
         List<String> recommendedKeywords = new ArrayList<>();
 

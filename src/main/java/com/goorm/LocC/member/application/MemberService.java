@@ -9,9 +9,6 @@ import com.goorm.LocC.member.dto.PreferenceRequest;
 import com.goorm.LocC.member.dto.ProfileInfoRespDto;
 import com.goorm.LocC.member.exception.MemberException;
 import com.goorm.LocC.member.repository.MemberRepository;
-import com.goorm.LocC.store.domain.Category;
-import com.goorm.LocC.store.domain.City;
-import com.goorm.LocC.store.domain.Province;
 import com.goorm.LocC.store.dto.StoreInfoDto;
 import com.goorm.LocC.store.repository.StoreBookmarkRepository;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +36,7 @@ public class MemberService {
                 .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
 
         MemberCond condition = new MemberCond(member);
-        List<CurationInfoDto> curations = curationBookmarkRepository.searchCurationsByMember(condition);
+        List<CurationInfoDto> curations = curationBookmarkRepository.findCurationsByMember(condition);
         List<StoreInfoDto> stores = storeBookmarkRepository.searchStoresByMember(condition);
 
         return ProfileInfoRespDto.of(member, curations, stores);

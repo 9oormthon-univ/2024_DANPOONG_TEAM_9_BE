@@ -29,15 +29,6 @@ public class ReviewDetailResponseDto {
     @Schema(description = "좋아요 개수", example = "10")
     private int likeCount;
 
-//    @Schema(description = "북마크 여부", example = "true")
-//    private boolean isBookmarked;
-
-//    @Schema(description = "찜 개수", example = "5")
-//    private int dibsCount;
-
-//    @Schema(description = "공유 개수", example = "2")
-//    private int shareCount;
-
     @Schema(description = "방문 날짜", example = "2023-10-10")
     private LocalDate visitDate;
 
