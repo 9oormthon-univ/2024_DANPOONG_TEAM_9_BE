@@ -52,4 +52,14 @@ public class StoreController {
         return ResponseEntity.ok(ApiResponse.success(stores));
     }
 
+    @Operation(summary = "가게 상세 조회", description = "가게 ID로 가게 상세 정보를 조회합니다.")
+    @GetMapping("/{storeId}")
+    public ResponseEntity<ApiResponse<Void>> getStoreById(
+            @Parameter(description = "가게 ID", example = "1")
+            @PathVariable Long storeId
+    ) {
+        storeService.findById(storeId);
+//        return ResponseEntity.ok(ApiResponse.success());
+        return null;
+    }
 }
