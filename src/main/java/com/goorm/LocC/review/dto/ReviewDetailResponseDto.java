@@ -44,8 +44,7 @@ public class ReviewDetailResponseDto {
     @Schema(description = "카카오지도 URL", example = "https://kakaomap.url")
     private String kakaomapUrl;
 
-    public ReviewDetailResponseDto(Long reviewId, String storeName, String content, String image, boolean isLiked, int likeCount,
-                                   boolean isBookmarked, int dibsCount, int shareCount, LocalDate visitDate, String kakaomapUrl) {
+    public ReviewDetailResponseDto(Long reviewId, String storeName, String content, String image, boolean isLiked, int likeCount, LocalDate visitDate, String kakaomapUrl) {
         this.reviewId = reviewId;
         this.storeName = storeName;
         this.content = content;
