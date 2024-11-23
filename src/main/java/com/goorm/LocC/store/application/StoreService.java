@@ -4,10 +4,14 @@ import com.goorm.LocC.member.domain.Member;
 import com.goorm.LocC.member.exception.MemberException;
 import com.goorm.LocC.member.repository.MemberRepository;
 import com.goorm.LocC.review.repository.ReviewRepository;
+import com.goorm.LocC.searchHistory.domain.SearchHistory;
 import com.goorm.LocC.searchHistory.repository.SearchHistoryRepository;
 import com.goorm.LocC.store.domain.*;
-import com.goorm.LocC.store.dto.*;
+import com.goorm.LocC.store.dto.DetailStoreResp;
 import com.goorm.LocC.store.dto.DetailStoreResp.SimpleReviewInfo;
+import com.goorm.LocC.store.dto.NearStoreInfoDto;
+import com.goorm.LocC.store.dto.StoreInfoExDto;
+import com.goorm.LocC.store.dto.ToggleStoreBookmarkRespDto;
 import com.goorm.LocC.store.exception.StoreException;
 import com.goorm.LocC.store.repository.BusinessHourRepository;
 import com.goorm.LocC.store.repository.NearStoreCond;
@@ -76,17 +80,16 @@ public class StoreService {
                 .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
     }
 
-    public List<StoreInfoExDto> findStores(List<Category> category, Province province, City city, String storeName, String sortBy) {
+    public List<StoreInfoExDto> findStores(List<Category> category, Province province, City city, String storeName, String sortBy, String email) {
         if (category != null && category.size() > 2) {
             throw new IllegalArgumentException("최대 2개의 카테고리만 선택할 수 있습니다.");
         }
 
-//        Member member = findMemberByEmail(email);
-//        if (!storeName.isEmpty()) {
-//            SearchHistory searchHistory = new SearchHistory(member, storeName);
-//            searchHistoryRepository.save(searchHistory);
-//            deleteOldSearchHistory(member);
-//        }
+        Member member = findMemberByEmail(email);
+        if (!storeName.isEmpty()) {
+            SearchHistory searchHistory = new SearchHistory(member, storeName);
+            searchHistoryRepository.save(searchHistory);
+        }
 
         List<Store> stores = storeRepository.findStoresByFilters(category, province, city, storeName, Sort.by(sortBy));
 
