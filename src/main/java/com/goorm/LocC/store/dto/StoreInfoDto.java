@@ -1,6 +1,7 @@
     package com.goorm.LocC.store.dto;
 
     import com.fasterxml.jackson.annotation.JsonFormat;
+    import com.goorm.LocC.store.domain.BusinessStatus;
     import com.goorm.LocC.store.domain.Category;
     import com.goorm.LocC.store.domain.City;
     import com.goorm.LocC.store.domain.Province;
@@ -39,8 +40,8 @@
         @Schema(description = "영업 종료 시간", example = "21:00", type = "string")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
         private LocalTime closeTime;
-//        @Schema(description = "영업 상태", example = "영업중")
-//        private BusinessStatus businessStatus;
+        @Schema(description = "영업 상태", example = "영업중")
+        private BusinessStatus businessStatus;
 
         public StoreInfoDto(Long storeId, String name, Category category, Province province, City city, String imageUrl, float rating, int reviewCount, LocalTime openTime, LocalTime closeTime, Boolean isHoliday) {
             this.storeId = storeId;
@@ -53,6 +54,6 @@
             this.reviewCount = reviewCount;
             this.openTime = openTime;
             this.closeTime = closeTime;
-//            this.businessStatus = BusinessStatus.checkBusinessStatus(isHoliday, openTime, closeTime);
+            this.businessStatus = BusinessStatus.checkBusinessStatus(isHoliday, openTime, closeTime);
         }
     }
