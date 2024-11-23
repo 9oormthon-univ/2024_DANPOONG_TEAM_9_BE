@@ -41,7 +41,6 @@ public enum BusinessStatus {
         if (businessStatus == null) {
             throw new StoreException(INVALID_BUSINESS_STATUS_ENUM);
         }
-
         return businessStatus;
     }
 

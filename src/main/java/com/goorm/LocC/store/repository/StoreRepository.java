@@ -18,10 +18,10 @@ public interface StoreRepository extends JpaRepository<Store, Long>, StoreReposi
 
     // 필터링 조건으로 스토어 조회
     @Query("SELECT s FROM Store s WHERE " +
-            "(:category IS NULL OR s.category = :category) AND " +
+            "(:category IS NULL OR s.category IN :category) AND " +
             "(:province IS NULL OR s.province = :province) AND " +
             "(:city IS NULL OR s.city = :city) AND " +
-            "(:storeName IS NULL OR s.name LIKE %:storeName%)")
+            "(:storeName IS NULL OR :storeName = '' OR LOWER(s.name) LIKE LOWER(CONCAT('%', REPLACE(:storeName, ' ', '%'), '%')))")
     List<Store> findStoresByFilters(
             @Param("category") List<Category> category,
             @Param("province") Province province,
