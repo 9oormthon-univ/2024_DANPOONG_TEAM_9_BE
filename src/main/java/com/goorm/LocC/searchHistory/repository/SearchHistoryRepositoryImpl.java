@@ -36,7 +36,7 @@ public class SearchHistoryRepositoryImpl implements SearchHistoryRepositoryCusto
                 .groupBy(searchHistory.keyword)
                 .orderBy(
                         Expressions.numberTemplate(Double.class,
-                                "SUM(1 / (DATEDIFF({0}, {1}) + 4))", // 검색 날짜 기준으로 가중치 1/(날짜차이+4)
+                                "SUM(1 / (TIMESTAMPDIFF(HOUR, {0}, {1}) + 4))", // 검색 시간 기준으로 가중치 1/(시간차이+4)
                                 Expressions.constant(now), searchHistory.createdAt
                         ).desc()
                 )
@@ -76,7 +76,7 @@ public class SearchHistoryRepositoryImpl implements SearchHistoryRepositoryCusto
                 .groupBy(searchHistory.keyword)
                 .orderBy(
                         Expressions.numberTemplate(Double.class,
-                                "SUM(1 / (DATEDIFF({0}, {1}) + 4))", // 검색 날짜 기준으로 가중치 1/(날짜차이+4)
+                                "SUM(1 / (TIMESTAMPDIFF(HOUR, {0}, {1}) + 4))", // 검색 시간 기준으로 가중치 1/(시간차이+4)
                                 Expressions.constant(now), searchHistory.createdAt
                         ).desc()
                 )
