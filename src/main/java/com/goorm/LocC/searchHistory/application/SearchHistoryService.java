@@ -1,19 +1,20 @@
 package com.goorm.LocC.searchHistory.application;
 
 import com.goorm.LocC.member.domain.Member;
+import com.goorm.LocC.member.domain.PreferredCategory;
 import com.goorm.LocC.member.exception.MemberException;
 import com.goorm.LocC.member.repository.MemberRepository;
 import com.goorm.LocC.searchHistory.domain.SearchHistory;
-import com.goorm.LocC.searchHistory.dto.RecentKeywordCond;
 import com.goorm.LocC.searchHistory.dto.SearchKeywordRespDto;
 import com.goorm.LocC.searchHistory.dto.SearchKeywordRespDto.RecentKeywordInfoDto;
 import com.goorm.LocC.searchHistory.exception.SearchHistoryException;
+import com.goorm.LocC.searchHistory.repository.RecommendedKeywordCond;
 import com.goorm.LocC.searchHistory.repository.SearchHistoryRepository;
+import com.goorm.LocC.store.domain.Category;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.goorm.LocC.member.exception.MemberErrorCode.MEMBER_NOT_FOUND;
@@ -29,7 +30,6 @@ public class SearchHistoryService {
 
     public SearchKeywordRespDto getSearchKeywordInfo(String email) {
         Member member = findMemberByEmail(email);
-        RecentKeywordCond condition = new RecentKeywordCond(member, 5);
 
         List<String> popularKeywords = searchHistoryRepository.findPopularKeywordsTop10();
         List<SearchHistory> searchHistories = searchHistoryRepository
@@ -46,29 +46,34 @@ public class SearchHistoryService {
                 .map(RecentKeywordInfoDto::from)
                 .toList();
 
-        // TODO: 추천 검색어 키워드 로직 변경 필요
-        String preferredProvince = member.getPreferredProvince().getName();
-        List<String> recommendedKeywords = new ArrayList<>();
+        // 멤버의 선호 지역과 카테고리를 기반으로 같은 사용자들이 많이 검색한 키워드를 추천
+        List<Category> preferredCategories = member.getPreferredCategories().stream()
+                .map(PreferredCategory::getCategory)
+                .toList();
 
-        if (preferredProvince != null) {
-            recommendedKeywords = List.of(
-                    preferredProvince + " 카페",
-                    preferredProvince + " 숙소",
-                    preferredProvince + " 맛집",
-                    preferredProvince + " 레포츠",
-                    preferredProvince + " 기념품",
-                    preferredProvince + " 액티비티",
-                    preferredProvince + " 놀거리");
-        } else {
-            recommendedKeywords = List.of(
-                    "파주 스테이",
-                    "파주 숙소",
-                    "파주 맛집",
-                    "단양 숙소",
-                    "단양 맛집",
-                    "단양 기념품",
-                    "부산 카페");
-        }
+        List<String> recommendedKeywords = searchHistoryRepository.getRecommendedKeyword(
+                new RecommendedKeywordCond(member.getPreferredProvince(), preferredCategories, 7)
+        );
+
+//        if (preferredProvince != null) {
+//            recommendedKeywords = List.of(
+//                    preferredProvince + " 카페",
+//                    preferredProvince + " 숙소",
+//                    preferredProvince + " 맛집",
+//                    preferredProvince + " 레포츠",
+//                    preferredProvince + " 기념품",
+//                    preferredProvince + " 액티비티",
+//                    preferredProvince + " 놀거리");
+//        } else {
+//            recommendedKeywords = List.of(
+//                    "파주 스테이",
+//                    "파주 숙소",
+//                    "파주 맛집",
+//                    "단양 숙소",
+//                    "단양 맛집",
+//                    "단양 기념품",
+//                    "부산 카페");
+//        }
 
         return SearchKeywordRespDto.builder()
                 .popularKeywords(popularKeywords)

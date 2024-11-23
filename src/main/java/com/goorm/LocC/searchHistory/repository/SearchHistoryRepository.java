@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SearchHistoryRepository extends JpaRepository<SearchHistory, Long>, SearchHistoryRepositoryCustom {
-    void deleteAllByMember(Member member);
     List<SearchHistory> findAllByMemberAndIsDeletedOrderByCreatedAtDesc(Member member, Boolean isDeleted);
     Optional<SearchHistory> findSearchHistoryByMemberAndSearchHistoryId(Member member, Long searchHistoryId);
 }

@@ -9,4 +9,5 @@ public interface SearchHistoryRepositoryCustom {
 
     List<String> findPopularKeywordsTop10();
     List<RecentKeywordInfoDto> findRecentKeywordsByMember(RecentKeywordCond condition);
+    List<String> getRecommendedKeyword(RecommendedKeywordCond condition);
 }
