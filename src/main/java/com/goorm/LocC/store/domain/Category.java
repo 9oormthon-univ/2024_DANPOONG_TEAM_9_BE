@@ -17,13 +17,12 @@ public enum Category {
     FOOD("식품"),
     RESTAURANT("맛집"),
     CAFE("카페"),
-    HANDCRAFT("공방"),
+    HANDCRAFT("체험/공방"),
     SHOPPING("쇼핑"),
-    LOCAL_STORE("동네가게"),
-    BOOKSTORE("책방"),
-    SPACE("공간"),
+    ONLINE("온라인"),
+    CULTURE("문화"),
+    BAR("술집"),
     ACCOMMODATION("숙소");
-    ;
 
     private final String name;
     private static final Map<String, Category> NAME_TO_ENUM_MAP = new HashMap<>();
