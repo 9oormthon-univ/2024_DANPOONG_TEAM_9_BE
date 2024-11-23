@@ -20,6 +20,8 @@ public class NearStoreInfoDto {
         private Long storeId;
         @Schema(description = "가게 이름", example = "로슈아커피")
         private String name;
+        @Schema(description = "가게 설명", example = "로스팅으로 특별한 건어물을 제공합니다.")
+        private String content;
         @Schema(description = "북마크 여부", example = "true")
         private boolean isBookmarked;
         @Schema(description = "가게 카테고리", example = "카페")
@@ -40,9 +42,10 @@ public class NearStoreInfoDto {
         private BusinessStatus businessStatus;
 
         @Builder
-        public NearStoreInfoDto(Long storeId, String name, boolean isBookmarked, Category category, List<String> images, float rating, int reviewCount, LocalTime openTime, LocalTime closeTime, BusinessStatus businessStatus) {
+        public NearStoreInfoDto(Long storeId, String name, String content, boolean isBookmarked, Category category, List<String> images, float rating, int reviewCount, LocalTime openTime, LocalTime closeTime, BusinessStatus businessStatus) {
             this.storeId = storeId;
             this.name = name;
+            this.content = content;
             this.isBookmarked = isBookmarked;
             this.category = category;
             this.images = images;
@@ -63,6 +66,7 @@ public class NearStoreInfoDto {
             return NearStoreInfoDto.builder()
                     .storeId(store.getStoreId())
                     .name(store.getName())
+                    .content(store.getContent())
                     .isBookmarked(isBookmarked)
                     .category(store.getCategory())
                     .images(imageUrls)
