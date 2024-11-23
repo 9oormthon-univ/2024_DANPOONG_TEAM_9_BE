@@ -3,6 +3,7 @@ package com.goorm.LocC.store.application;
 import com.goorm.LocC.member.domain.Member;
 import com.goorm.LocC.member.exception.MemberException;
 import com.goorm.LocC.member.repository.MemberRepository;
+import com.goorm.LocC.searchHistory.domain.SearchHistory;
 import com.goorm.LocC.searchHistory.repository.SearchHistoryRepository;
 import com.goorm.LocC.store.domain.Store;
 import com.goorm.LocC.store.domain.StoreBookmark;
@@ -54,6 +55,16 @@ public class StoreService {
                     .isBookmarked(true)
                     .build();
         }
+    }
+
+    /**
+     * 검색 기록이 6개 이상일 시 오래된 검색 기록 삭제 (삭제 여부 필드 true로 변경)
+     */
+    public void deleteOldSearchHistory(Member member) {
+        searchHistoryRepository.findAllByMemberAndIsDeletedOrderByCreatedAtDesc(member, false)
+                .stream()
+                .skip(5)
+                .forEach(SearchHistory::delete);
     }
 
     private Member findMemberByEmail(String email) {

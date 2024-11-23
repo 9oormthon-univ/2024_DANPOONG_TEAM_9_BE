@@ -73,7 +73,7 @@ public class SearchHistoryService {
     public void deleteAll(String email) {
         Member member = findMemberByEmail(email);
 
-        List<SearchHistory> searchHistories = searchHistoryRepository.findAllByMemberAndIsDeleted(member, false);
+        List<SearchHistory> searchHistories = searchHistoryRepository.findAllByMemberAndIsDeletedOrderByCreatedAtDesc(member, false);
         searchHistories.forEach(SearchHistory::delete);
     }
 
