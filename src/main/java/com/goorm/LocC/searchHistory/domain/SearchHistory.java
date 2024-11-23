@@ -29,4 +29,9 @@ public class SearchHistory extends BaseEntity {
     public void delete() {
         this.isDeleted = true;
     }
+
+    public SearchHistory(Member member, String keyword) {
+        this.member = member;
+        this.keyword = keyword;
+    }
 }

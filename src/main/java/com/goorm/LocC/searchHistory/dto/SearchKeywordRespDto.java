@@ -1,5 +1,6 @@
 package com.goorm.LocC.searchHistory.dto;
 
+import com.goorm.LocC.searchHistory.domain.SearchHistory;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -31,6 +32,10 @@ public class SearchKeywordRespDto {
         public RecentKeywordInfoDto(Long searchHistoryId, String keyword) {
             this.searchHistoryId = searchHistoryId;
             this.keyword = keyword;
+        }
+
+        public static RecentKeywordInfoDto from(SearchHistory searchHistory) {
+            return new RecentKeywordInfoDto(searchHistory.getSearchHistoryId(), searchHistory.getKeyword());
         }
     }
 

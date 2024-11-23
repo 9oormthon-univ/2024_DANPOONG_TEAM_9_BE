@@ -27,13 +27,24 @@ public class SearchHistoryService {
     private final MemberRepository memberRepository;
     private final SearchHistoryRepository searchHistoryRepository;
 
-    @Transactional(readOnly = true)
     public SearchKeywordRespDto getSearchKeywordInfo(String email) {
         Member member = findMemberByEmail(email);
         RecentKeywordCond condition = new RecentKeywordCond(member, 5);
 
         List<String> popularKeywords = searchHistoryRepository.findPopularKeywordsTop10();
-        List<RecentKeywordInfoDto> recentKeywords = searchHistoryRepository.findRecentKeywordsByMember(condition);
+        List<SearchHistory> searchHistories = searchHistoryRepository
+                .findAllByMemberAndIsDeletedOrderByCreatedAtDesc(member, false);
+
+        if (searchHistories.size() > 3) {
+            searchHistories.stream()
+                    .skip(3)
+                    .forEach(SearchHistory::delete);
+        }
+
+        List<RecentKeywordInfoDto> recentKeywords = searchHistories.stream()
+                .limit(3)
+                .map(RecentKeywordInfoDto::from)
+                .toList();
 
         // TODO: 추천 키워드 로직 변경 필요
         String preferredProvince = member.getPreferredProvince().getName();
@@ -43,7 +54,11 @@ public class SearchHistoryService {
             recommendedKeywords = List.of(
                     preferredProvince + " 카페",
                     preferredProvince + " 숙소",
-                    preferredProvince + " 맛집");
+                    preferredProvince + " 맛집",
+                    preferredProvince + " 레포츠",
+                    preferredProvince + " 기념품",
+                    preferredProvince + " 액티비티",
+                    preferredProvince + " 놀거리");
         } else {
             recommendedKeywords = List.of(
                     "파주 스테이",
@@ -73,7 +88,7 @@ public class SearchHistoryService {
     public void deleteAll(String email) {
         Member member = findMemberByEmail(email);
 
-        List<SearchHistory> searchHistories = searchHistoryRepository.findAllByMemberAndIsDeleted(member, false);
+        List<SearchHistory> searchHistories = searchHistoryRepository.findAllByMemberAndIsDeletedOrderByCreatedAtDesc(member, false);
         searchHistories.forEach(SearchHistory::delete);
     }
 

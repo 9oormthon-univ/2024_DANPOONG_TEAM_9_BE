@@ -1,12 +1,10 @@
 package com.goorm.LocC.store.application;
 
-import com.goorm.LocC.curation.dto.CurationStoreInfoDto;
 import com.goorm.LocC.member.domain.Member;
 import com.goorm.LocC.member.exception.MemberException;
 import com.goorm.LocC.member.repository.MemberRepository;
 import com.goorm.LocC.searchHistory.repository.SearchHistoryRepository;
 import com.goorm.LocC.store.domain.*;
-import com.goorm.LocC.store.dto.StoreDetailDto;
 import com.goorm.LocC.store.dto.StoreInfoDto;
 import com.goorm.LocC.store.dto.ToggleStoreBookmarkRespDto;
 import com.goorm.LocC.store.exception.StoreException;
@@ -38,7 +36,6 @@ public class StoreService {
     private final StoreRepository storeRepository;
     private final StoreBookmarkRepository storeBookmarkRepository;
     private final BusinessHourRepository businessHourRepository;
-
     private final SearchHistoryRepository searchHistoryRepository;
 
     public ToggleStoreBookmarkRespDto toggleBookmark(Long storeId, String email) {
@@ -77,6 +74,13 @@ public class StoreService {
         if (category != null && category.size() > 2) {
             throw new IllegalArgumentException("최대 2개의 카테고리만 선택할 수 있습니다.");
         }
+
+//        Member member = findMemberByEmail(email);
+//        if (!storeName.isEmpty()) {
+//            SearchHistory searchHistory = new SearchHistory(member, storeName);
+//            searchHistoryRepository.save(searchHistory);
+//            deleteOldSearchHistory(member);
+//        }
 
         List<Store> stores = storeRepository.findStoresByFilters(category, province, city, storeName, Sort.by(sortBy));
 
