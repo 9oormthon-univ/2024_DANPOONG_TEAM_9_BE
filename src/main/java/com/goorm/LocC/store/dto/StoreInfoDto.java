@@ -1,16 +1,16 @@
 package com.goorm.LocC.store.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.goorm.LocC.store.domain.BusinessStatus;
-import com.goorm.LocC.store.domain.Category;
-import com.goorm.LocC.store.domain.City;
-import com.goorm.LocC.store.domain.Province;
+import com.goorm.LocC.store.domain.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -28,8 +28,10 @@ public class StoreInfoDto {
     private City city;
     @Schema(description = "가게 도로명주소", example = "강원도 영월군 주천면 서강로 221-4")
     private String address;
-    @Schema(description = "가게 이미지", example = "https://image.jpg")
-    private String imageUrl;
+    @Schema(description = "가게 이미지 리스트", example = "[\"https://image1.jpg\", \"https://image2.jpg\"]")
+    private List<String> images;
+    @Schema(description = "가게 설명")
+    private String summary;
     @Schema(description = "리뷰 평점", example = "4.42")
     private float rating;
     @Schema(description = "리뷰 수", example = "273")
@@ -43,18 +45,44 @@ public class StoreInfoDto {
     @Schema(description = "영업 상태", example = "영업중")
     private BusinessStatus businessStatus;
 
-    public StoreInfoDto(Long storeId, String name, Category category, Province province, City city, String address, String imageUrl, float rating, int reviewCount, LocalTime openTime, LocalTime closeTime, Boolean isHoliday, BusinessStatus businessStatus) {
+    @Builder
+    public StoreInfoDto(Long storeId, String name, Category category, Province province, City city, String address, List<String> images, String summary, float rating, int reviewCount, LocalTime openTime, LocalTime closeTime, BusinessStatus businessStatus) {
         this.storeId = storeId;
         this.name = name;
         this.category = category;
         this.province = province;
         this.city = city;
         this.address = address;
-        this.imageUrl = imageUrl;
-        this.rating = Math.round(rating * 100) / 100.0f; // 소수점 둘째자리까지
+        this.images = images;
+        this.summary = summary;
+        this.rating = Math.round(rating * 100) / 100.0f; // 소수점 둘째자리까지;
         this.reviewCount = reviewCount;
         this.openTime = openTime;
         this.closeTime = closeTime;
-        this.businessStatus = BusinessStatus.checkBusinessStatus(isHoliday, openTime, closeTime);
+        this.businessStatus = businessStatus;
+    }
+
+    public static StoreInfoDto of(Store store, BusinessHour businessHour) {
+        List<String> imageUrls = new ArrayList<>();
+        imageUrls.add(store.getThumbnailImageUrl());
+        imageUrls.addAll(store.getImages().stream()
+                .map(StoreImage::getImageUrl)
+                .toList());
+
+        return StoreInfoDto.builder()
+                .storeId(store.getStoreId())
+                .name(store.getName())
+                .category(store.getCategory())
+                .province(store.getProvince())
+                .city(store.getCity())
+                .address(store.getAddress())
+                .images(imageUrls)
+                .summary(store.getContent())
+                .rating(store.getRating())
+                .reviewCount(store.getReviewCount())
+                .openTime(businessHour.getOpenTime())
+                .closeTime(businessHour.getCloseTime())
+                .businessStatus(BusinessStatus.checkBusinessStatus(businessHour.getIsHoliday(), businessHour.getOpenTime(), businessHour.getCloseTime()))
+                .build();
     }
 }
