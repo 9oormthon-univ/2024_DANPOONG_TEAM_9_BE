@@ -48,9 +48,10 @@ public class StoreController {
             @Parameter(description = "도/광역시") @RequestParam(required = false) Province province,
             @Parameter(description = "시/군/구") @RequestParam(required = false) City city,
             @Parameter(description = "가게 이름") @RequestParam(required = false) String storeName,
-            @Parameter(description = "정렬 기준", example = "name") @RequestParam(defaultValue = "name") String sortBy
+            @Parameter(description = "정렬 기준", example = "name") @RequestParam(defaultValue = "name") String sortBy,
+            @AuthenticationPrincipal CustomUserDetails user
     ) {
-        List<StoreInfoExDto> stores = storeService.findStores(category, province, city, storeName, sortBy);
+        List<StoreInfoExDto> stores = storeService.findStores(category, province, city, storeName, sortBy, user.getEmail());
         return ResponseEntity.ok(ApiResponse.success(stores));
     }
 
