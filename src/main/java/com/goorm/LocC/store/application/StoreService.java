@@ -1,13 +1,10 @@
 package com.goorm.LocC.store.application;
 
-import com.goorm.LocC.curation.dto.CurationStoreInfoDto;
 import com.goorm.LocC.member.domain.Member;
 import com.goorm.LocC.member.exception.MemberException;
 import com.goorm.LocC.member.repository.MemberRepository;
-import com.goorm.LocC.searchHistory.domain.SearchHistory;
 import com.goorm.LocC.searchHistory.repository.SearchHistoryRepository;
 import com.goorm.LocC.store.domain.*;
-import com.goorm.LocC.store.dto.StoreDetailDto;
 import com.goorm.LocC.store.dto.StoreInfoDto;
 import com.goorm.LocC.store.dto.ToggleStoreBookmarkRespDto;
 import com.goorm.LocC.store.exception.StoreException;
@@ -39,7 +36,6 @@ public class StoreService {
     private final StoreRepository storeRepository;
     private final StoreBookmarkRepository storeBookmarkRepository;
     private final BusinessHourRepository businessHourRepository;
-
     private final SearchHistoryRepository searchHistoryRepository;
 
     public ToggleStoreBookmarkRespDto toggleBookmark(Long storeId, String email) {
@@ -69,16 +65,6 @@ public class StoreService {
         }
     }
 
-    /**
-     * 검색 기록이 6개 이상일 시 오래된 검색 기록 삭제 (삭제 여부 필드 true로 변경)
-     */
-    public void deleteOldSearchHistory(Member member) {
-        searchHistoryRepository.findAllByMemberAndIsDeletedOrderByCreatedAtDesc(member, false)
-                .stream()
-                .skip(5)
-                .forEach(SearchHistory::delete);
-    }
-
     private Member findMemberByEmail(String email) {
         return memberRepository.findByEmail(email)
                 .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
@@ -88,6 +74,13 @@ public class StoreService {
         if (category != null && category.size() > 2) {
             throw new IllegalArgumentException("최대 2개의 카테고리만 선택할 수 있습니다.");
         }
+
+//        Member member = findMemberByEmail(email);
+//        if (!storeName.isEmpty()) {
+//            SearchHistory searchHistory = new SearchHistory(member, storeName);
+//            searchHistoryRepository.save(searchHistory);
+//            deleteOldSearchHistory(member);
+//        }
 
         List<Store> stores = storeRepository.findStoresByFilters(category, province, city, storeName, Sort.by(sortBy));
 
