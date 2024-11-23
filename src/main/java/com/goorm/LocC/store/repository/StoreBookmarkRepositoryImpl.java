@@ -43,12 +43,10 @@ public class StoreBookmarkRepositoryImpl implements StoreBookmarkRepositoryCusto
                         )
                 )
                 .from(storeBookmark)
-                .join(storeBookmark.store, store)
-                .on(bookmarkMemberEq(condition.getMember()))
+                .join(storeBookmark.store, store).on(bookmarkMemberEq(condition.getMember()))
                 .join(businessHour).on(
                         businessHour.store.eq(store),
                         businessHourDayEq(today))
-//                .where(memberEq(condition.getMember()))
                 .orderBy(storeBookmark.createdAt.desc())
                 .fetch();
     }

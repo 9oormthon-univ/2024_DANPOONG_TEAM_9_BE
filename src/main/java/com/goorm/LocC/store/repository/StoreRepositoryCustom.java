@@ -9,5 +9,5 @@ import java.util.List;
 public interface StoreRepositoryCustom {
 
     List<BenefitStoreInfoDto> findBenefitStoresByProvinceAndCity(RegionCond condition);
-    List<Store> findStoresByProvince(NearStoreCond condition);
+    List<Store> findNearStoresByProvince(NearStoreCond condition);
 }

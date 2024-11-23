@@ -138,40 +138,41 @@ public class StoreService {
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(() -> new StoreException(STORE_NOT_FOUND));
 
+        // 가게 저장 여부 확인
         boolean isStoreBookmarked = storeBookmarkRepository.existsByMemberAndStore(member, store);
 
+        // 가게 주간 영업 시간 정보 조회(월~일)
         List<DetailStoreResp.BusinessHourInfo> businessHours = businessHourRepository.findBusinessHourByStoreOrderByDayOfWeek(store)
                 .stream()
-                .sorted(Comparator.comparingInt(b -> b.getDayOfWeek().getValue()))
+                .sorted(Comparator.comparingInt(b -> b.getDayOfWeek().getValue())) // 월 -> 일 순으로 정렬
                 .map(DetailStoreResp.BusinessHourInfo::from)
                 .toList();
 
         List<SimpleReviewInfo> reviews = reviewRepository.findSimpleReviewsByStore(store);
 
+        // 주변 가게 조회
         NearStoreCond condition = NearStoreCond.builder()
                 .province(store.getProvince())
-                .excludeStore(store)
-                .limit(3)
+                .excludeStore(store) // 현재 가게 제외
+                .limit(3) // 3개 제한
                 .build();
+        List<Store> stores = storeRepository.findNearStoresByProvince(condition);
 
-        List<Store> stores = storeRepository.findStoresByProvince(condition);
+        // 주변 가게 오늘 영업 시간 조회
         DayOfWeek now = LocalDate.now().getDayOfWeek();
         List<BusinessHour> nearStoresBusinessHours = businessHourRepository.findBusinessHourByStoreInAndDayOfWeek(stores, now);
 
         // 가게, 영업 시간 매핑
         Map<Store, BusinessHour> storeBusinessHourMap = nearStoresBusinessHours.stream()
                 .collect(Collectors.toMap(
-                        BusinessHour::getStore, // Store를 키로 사용
-                        bh -> bh // BusinessHour를 값으로 사용
+                        BusinessHour::getStore, // key: Store
+                        bh -> bh // value: BusinessHour
                 ));
 
         List<NearStoreInfoDto> nearbyStores = storeBusinessHourMap.entrySet().stream()
-                .map(
-                    entry -> {
-                        boolean isBookmarked = storeBookmarkRepository.existsByMemberAndStore(member, entry.getKey());
-                        return NearStoreInfoDto.of(entry.getKey(), entry.getValue(), isBookmarked);
-                    }
-                )
+                .map(e ->
+                        NearStoreInfoDto.of(e.getKey(), e.getValue(),
+                                storeBookmarkRepository.existsByMemberAndStore(member, e.getKey())))
                 .toList();
 
         return DetailStoreResp.of(store, isStoreBookmarked, businessHours, reviews, nearbyStores);

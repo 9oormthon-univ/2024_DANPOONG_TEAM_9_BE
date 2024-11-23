@@ -18,6 +18,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.goorm.LocC.member.domain.QMember.member;
 import static com.goorm.LocC.review.domain.QReview.review;
 import static com.goorm.LocC.review.domain.QReviewImage.reviewImage;
 import static com.goorm.LocC.store.domain.QStore.store;
@@ -76,20 +77,20 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
         List<Review> reviews = queryFactory
                 .selectFrom(review)
                 .leftJoin(review.reviewImage, reviewImage).fetchJoin()
+                .join(review.member, member).fetchJoin()
                 .where(review.store.eq(store))
                 .limit(5)
                 .fetch();
 
-    return  reviews.stream()
+    return reviews.stream()
             .map(r -> {
                 List<String> images = Stream.concat(
-                                Stream.of(r.getImageUrl()),
-                                r.getReviewImage().stream()
-                                        .map(ReviewImage::getImageUrl))
+                        Stream.of(r.getImageUrl()), r.getReviewImage().stream().map(ReviewImage::getImageUrl))
                         .toList();
 
                 return new SimpleReviewInfo(
-                        String.valueOf(r.getReviewId()),
+                        r.getReviewId(),
+                        r.getMember().getUsername(),
                         r.getRating(),
                         r.getContent().length() > 50 ? r.getContent().substring(0, 50) : r.getContent(), // 요약
                         images

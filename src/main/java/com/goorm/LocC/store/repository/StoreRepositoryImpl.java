@@ -42,7 +42,7 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
                 .fetch();
     }
 
-    public List<Store> findStoresByProvince(NearStoreCond condition) {
+    public List<Store> findNearStoresByProvince(NearStoreCond condition) {
         return queryFactory
                 .selectFrom(store)
                 .where(eqProvince(condition.getProvince()),
@@ -58,5 +58,4 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
     private BooleanExpression eqCity(City city) {
         return city != null ? store.city.eq(city) : null;
     }
-
 }
